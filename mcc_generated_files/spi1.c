@@ -66,8 +66,8 @@ uint16_t SPI1_ExchangeBuffer(uint8_t *pTransmitData, uint16_t byteCount, uint8_t
 
 void SPI1_Initialize (void)
 {
-    // MSTEN Master; DISSDO disabled; PPRE 1:1; SPRE 7:1; MODE16 disabled; SMP Middle; DISSCK disabled; CKP Idle:Low, Active:High; CKE Active to Idle; SSEN disabled; 
-    SPI1CON1 = 0x127;
+    // MSTEN Master; DISSDO disabled; PPRE 1:1; SPRE 7:1; MODE16 disabled; SMP Middle; DISSCK disabled; CKP Idle:High, Active:Low; CKE Idle to Active; SSEN disabled; 
+    SPI1CON1 = 0x67;
     // SPIFSD disabled; SPIBEN enabled; FRMPOL disabled; FRMDLY disabled; FRMEN disabled; 
     SPI1CON2 = 0x1;
     // SISEL SPI_INT_SPIRBF; SPIROV disabled; SPIEN enabled; SPISIDL disabled; 

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/flightsketch.dev1.X.production.elf">
+  <executable name="dist/default/debug/flightsketch.dev1.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>49152</length>
-      <used>108</used>
-      <free>49044</free>
+      <used>188</used>
+      <free>48964</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>524514</length>
-      <used>14313</used>
-      <free>510201</free>
+      <used>14316</used>
+      <free>510198</free>
     </memory>
   </executable>
 </project>

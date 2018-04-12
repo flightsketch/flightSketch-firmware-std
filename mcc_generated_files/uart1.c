@@ -187,34 +187,7 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1TXInterrupt ( void )
     }
 }
 
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
-{
-    while((U1STAbits.URXDA == 1))
-    {
 
-        *uart1_obj.rxTail = U1RXREG;
-
-        uart1_obj.rxTail++;
-
-        if(uart1_obj.rxTail == (uart1_rxByteQ + UART1_CONFIG_RX_BYTEQ_LENGTH))
-        {
-            uart1_obj.rxTail = uart1_rxByteQ;
-        }
-
-        uart1_obj.rxStatus.s.empty = false;
-        
-        if(uart1_obj.rxTail == uart1_obj.rxHead)
-        {
-            //Sets the flag RX full
-            uart1_obj.rxStatus.s.full = true;
-            break;
-        }
-        
-    }
-
-    IFS0bits.U1RXIF = false;
-   
-}
 
 
 void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1ErrInterrupt ( void )

@@ -131,7 +131,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="Pin Module" registerAlias="TRISB"/>
-         <value>63039</value>
+         <value>63007</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="SPI1" registerAlias="SPISTAT" settingAlias="SISEL" alias="SPI_INT_TRMT_COMPLETE"/>
@@ -727,7 +727,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="SPI1" registerAlias="SPICON1" settingAlias="CKP"/>
-         <value>Idle:Low, Active:High</value>
+         <value>Idle:High, Active:Low</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="LATB" settingAlias="LATB5"/>
@@ -1591,7 +1591,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="SPI1" registerAlias="SPICON1" settingAlias="CKE"/>
-         <value>Active to Idle</value>
+         <value>Idle to Active</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="RPOR4" settingAlias="RP42R"/>
@@ -2775,7 +2775,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="Custom Name RB5"/>
-         <value/>
+         <value>IO_RB5</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="ANSELB" settingAlias="ANSB0" alias="digital"/>
@@ -2851,7 +2851,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="SPI1" name="OpMode"/>
-         <value>0</value>
+         <value>3</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="SPI1" registerAlias="SPICON2" settingAlias="SPIFSD" alias="enabled"/>
@@ -3047,7 +3047,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="SPI1" registerAlias="SPICON1"/>
-         <value>295</value>
+         <value>103</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="CNPDB" settingAlias="CNPDB9"/>
@@ -3255,7 +3255,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="TRISB" settingAlias="TRISB5"/>
-         <value>input</value>
+         <value>output</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="System Module" registerAlias="FPOR" settingAlias="ALTI2C1" alias="ON"/>
@@ -3979,7 +3979,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="RB5"/>
-         <value>disabled</value>
+         <value>output</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="SPI1" registerAlias="SPICON1" settingAlias="CKP" alias="Idle:Low, Active:High"/>
@@ -4581,7 +4581,7 @@
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
          <file>mcc_generated_files\mcc.h</file>
-         <hash>4578810c0e0398a72c6c9463310494dfab1105566244b8f350b68f617509740d</hash>
+         <hash>1d7b43e7df5320bc3de59876105269aef940b96bd072930c2951b4e071601040</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\interrupt_manager.h</file>
@@ -4596,24 +4596,16 @@
          <hash>412072147f573434391aeed6c4b63b1ba767bdab6b7d8f7b20e1ce8dafa5f224</hash>
       </entry>
       <entry>
+         <file>mcc_generated_files\traps.c</file>
+         <hash>c55d677c5660dd3c77fc383671d3b261351f7bb6a29fc4bb084799a045ec8db1</hash>
+      </entry>
+      <entry>
          <file>mcc_generated_files\spi1.h</file>
          <hash>276d8bec34699a09dba4701d2eba1730b939f25bf2988550428a8368212e79af</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\pin_manager.h</file>
-         <hash>e76f92c74f915ea9688c31afc0d30dcc5cb0802046580a06e15127ac5fd82718</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\spi1.c</file>
-         <hash>de65ad5aae3ebf0df6cfc38a30cbc0df142a269ec00ef429a7ed21b33ecfa879</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\pin_manager.c</file>
-         <hash>00b677bffea78f97523c78b73215329a7248e495ad3be26c3a97713204aebd6d</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\traps.c</file>
-         <hash>c55d677c5660dd3c77fc383671d3b261351f7bb6a29fc4bb084799a045ec8db1</hash>
+         <hash>223a4e84d67e7177bb6f613a23ad381a0d605204c0e7fa2905c9ca33776607e5</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\traps.h</file>
@@ -4626,6 +4618,14 @@
       <entry>
          <file>mcc_generated_files\interrupt_manager.c</file>
          <hash>891d920bc5bd8b6c141b3aa4c416f3364458b8e64799a057130e5e4e49335773</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\spi1.c</file>
+         <hash>84b94b105755aa81245ff157ff578d34102a5037787d6a2682efed16946bdf2e</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\pin_manager.c</file>
+         <hash>166d79305f72cfe42d0fdc654237eb789b4894049d572c92b2df9f0debf285a2</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

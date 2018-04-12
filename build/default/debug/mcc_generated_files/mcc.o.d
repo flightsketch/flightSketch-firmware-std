@@ -1,7 +1,5 @@
-build/default/production/main.o:  \
-main.c  \
-bmp280.h  \
-bmp280_defs.h  \
+build/default/debug/mcc_generated_files/mcc.o:  \
+mcc_generated_files/mcc.c  \
  mcc_generated_files/mcc.h  \
 mcc_generated_files/pin_manager.h  \
  mcc_generated_files/spi1.h  \

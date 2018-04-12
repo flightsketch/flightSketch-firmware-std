@@ -14,6 +14,8 @@
         <itemPath>mcc_generated_files/uart1.h</itemPath>
         <itemPath>mcc_generated_files/spi1.h</itemPath>
       </logicalFolder>
+      <itemPath>bmp280.h</itemPath>
+      <itemPath>bmp280_defs.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -33,6 +35,7 @@
         <itemPath>mcc_generated_files/spi1.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
+      <itemPath>bmp280.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -215,7 +218,6 @@
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="UART 1" value="true"/>
         <property key="UART 2" value="true"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
@@ -230,7 +232,7 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-557eb"/>
-        <property key="poweroptions.powerenable" value="false"/>
+        <property key="poweroptions.powerenable" value="true"/>
         <property key="programmertogo.imagename" value=""/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>

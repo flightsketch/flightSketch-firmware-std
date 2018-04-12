@@ -6,7 +6,7 @@ Tool Name:
 Command:
   -p33EP512GP502 \
   -o \
-  dist/default/production/flightsketch.dev1.X.production.elf \
+  dist/default/debug/flightsketch.dev1.X.debug.elf \
   -Lc:/program files (x86)/microchip/xc16/v1.33/bin/bin/.. \
   -Lc:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib \
   -Lc:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../support/PIC24E/gld \
@@ -16,17 +16,27 @@ Command:
   -Lc:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../support/dsPIC33C/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/mcc_generated_files/pin_manager.o \
-  build/default/production/mcc_generated_files/mcc.o \
-  build/default/production/mcc_generated_files/interrupt_manager.o \
-  build/default/production/mcc_generated_files/traps.o \
-  build/default/production/mcc_generated_files/uart1.o \
-  build/default/production/mcc_generated_files/spi1.o \
-  build/default/production/main.o \
-  build/default/production/bmp280.o \
+  build/default/debug/mcc_generated_files/pin_manager.o \
+  build/default/debug/mcc_generated_files/mcc.o \
+  build/default/debug/mcc_generated_files/interrupt_manager.o \
+  build/default/debug/mcc_generated_files/traps.o \
+  build/default/debug/mcc_generated_files/uart1.o \
+  build/default/debug/mcc_generated_files/spi1.o \
+  build/default/debug/main.o \
+  build/default/debug/bmp280.o \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.00 \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.01 \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.02 \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.03 \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.04 \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.05 \
+  -TC:\\Users\\russ\\AppData\\Local\\Temp\\tmp00001904.06 \
   --local-stack \
   --defsym=__MPLAB_BUILD=1 \
-  -Tp33EP512GP502.gld.00 \
+  --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_PK3=1 \
+  -Tp33EP512GP502.gld.07 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -38,10 +48,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/flightsketch.dev1.X.production.map \
+  -Map=dist/default/debug/flightsketch.dev1.X.debug.map \
   --report-mem \
   --memorysummary \
-  dist/default/production/memoryfile.xml \
+  dist/default/debug/memoryfile.xml \
   -start-group \
   --library=lega-pic30-elf \
   --library=m-elf \
@@ -59,21 +69,21 @@ c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normalep.Leo)
                               (__crt_start_mode_normal)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32ep.Leo)
-                              build/default/production/main.o (___delay32)
+                              build/default/debug/main.o (___delay32)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(addsf3.epeo)
-                              build/default/production/main.o (___subsf3)
+                              build/default/debug/main.o (___subsf3)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(divsf3.epeo)
-                              build/default/production/main.o (___divsf3)
+                              build/default/debug/main.o (___divsf3)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(fixsfsi.epeo)
-                              build/default/production/bmp280.o (_(float, int, long long, short, float, short, int))
+                              build/default/debug/bmp280.o (_(float, int, long long, short, float, short, int))
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(fixunssfsi.epeo)
-                              build/default/production/main.o (___fixunssfsi)
+                              build/default/debug/main.o (___fixunssfsi)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(floatsisf.epeo)
-                              build/default/production/bmp280.o (___floatsisf)
+                              build/default/debug/bmp280.o (___floatsisf)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(floatunsisf.epeo)
-                              build/default/production/main.o (___floatunsisf)
+                              build/default/debug/main.o (___floatunsisf)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(fne.epeo)
-                              build/default/production/bmp280.o (___nesf2)
+                              build/default/debug/bmp280.o (___nesf2)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(fpack.epeo)
                               c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(addsf3.epeo) (__fpack)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(funpack.epeo)
@@ -83,15 +93,15 @@ c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(funpack
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(futil.epeo)
                               c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(addsf3.epeo) (__fPropagateNaN)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(mulsf3.epeo)
-                              build/default/production/main.o (___mulsf3)
+                              build/default/debug/main.o (___mulsf3)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(powf.epeo)
-                              build/default/production/main.o (_powf)
+                              build/default/debug/main.o (_powf)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(udivsi3.epeo)
-                              build/default/production/bmp280.o (___udivsi3)
+                              build/default/debug/bmp280.o (___udivsi3)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(divmoddi3.epeo)
-                              build/default/production/main.o (___udivdi3)
+                              build/default/debug/main.o (___udivdi3)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(muldi3.epeo)
-                              build/default/production/main.o (___muldi3)
+                              build/default/debug/main.o (___muldi3)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(_frexpf.epeo)
                               c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(powf.epeo) (__frexpf)
 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(errno.epeo)
@@ -144,9 +154,9 @@ section                    address   length (PC units)   length (bytes) (dec)
 .dinit                      0x26c8                0x28            0x3c  (60)
 .text                       0x26f0                0x24            0x36  (54)
 .init.delay32               0x2714                0x1c            0x2a  (42)
-.text                       0x2730                0x16            0x21  (33)
+.text                       0x2730                0x18            0x24  (36)
 
-                 Total program memory used (bytes):         0x37e9  (14313) 2%
+                 Total program memory used (bytes):         0x37ec  (14316) 2%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0x1fc]
@@ -169,11 +179,18 @@ Data Memory  [Origin = 0x1000, Length = 0xc000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.ndata                      0x1000                   0             0x2  (2)
-.nbss                       0x1002                   0             0x4  (4)
-.bss                        0x1006                   0            0x66  (102)
+reserve_data_0x1000         0x1000                0x1c            0x1c  (28)
+reserve_data_0x101c         0x101c                 0x2             0x2  (2)
+reserve_data_0x101e         0x101e                 0x2             0x2  (2)
+reserve_data_0x1020         0x1020                 0x2             0x2  (2)
+reserve_data_0x1022         0x1022                 0x2             0x2  (2)
+reserve_data_0x1024         0x1024                 0x4             0x4  (4)
+reserve_data_0x1028         0x1028                0x28            0x28  (40)
+.ndata                      0x1050                   0             0x2  (2)
+.nbss                       0x1052                   0             0x4  (4)
+.bss                        0x1056                   0            0x66  (102)
 
-                 Total data memory used (bytes):           0x6c  (108) <1%
+                 Total data memory used (bytes):           0xbc  (188) <1%
 
 
 Dynamic Memory Usage
@@ -181,20 +198,20 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                       0x106c                              0xbf94  (49044)
+stack                       0x10bc                              0xbf44  (48964)
 
-                 Maximum dynamic memory (bytes):         0xbf94  (49044)
+                 Maximum dynamic memory (bytes):         0xbf44  (48964)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x1002                  _sendData
-                    0x1006                  _bmp
+                    0x1052                  _sendData
+                    0x1056                  _bmp
 
 External Symbols in Data Memory (by name):
 
-                    0x1006                  _bmp
-                    0x1002                  _sendData
+                    0x1056                  _bmp
+                    0x1052                  _sendData
 
 External Symbols in Program Memory (by address):
 
@@ -438,15 +455,53 @@ aivt             0x000000           0xffffffff
 
 Linker script and memory map
 
-LOAD build/default/production/mcc_generated_files/pin_manager.o
-LOAD build/default/production/mcc_generated_files/mcc.o
-LOAD build/default/production/mcc_generated_files/interrupt_manager.o
-LOAD build/default/production/mcc_generated_files/traps.o
-LOAD build/default/production/mcc_generated_files/uart1.o
-LOAD build/default/production/mcc_generated_files/spi1.o
-LOAD build/default/production/main.o
-LOAD build/default/production/bmp280.o
+LOAD build/default/debug/mcc_generated_files/pin_manager.o
+LOAD build/default/debug/mcc_generated_files/mcc.o
+LOAD build/default/debug/mcc_generated_files/interrupt_manager.o
+LOAD build/default/debug/mcc_generated_files/traps.o
+LOAD build/default/debug/mcc_generated_files/uart1.o
+LOAD build/default/debug/mcc_generated_files/spi1.o
+LOAD build/default/debug/main.o
+LOAD build/default/debug/bmp280.o
+
+reserve_data_0x1000
+                    0x1000         0x1c
+                    0x101c                  . = 0x1c
+ *fill*             0x1000         0x1c00
+
+reserve_data_0x101c
+                    0x101c          0x2
+                    0x101e                  . = 0x2
+ *fill*             0x101c          0x200
+
+reserve_data_0x101e
+                    0x101e          0x2
+                    0x1020                  . = 0x2
+ *fill*             0x101e          0x200
+
+reserve_data_0x1020
+                    0x1020          0x2
+                    0x1022                  . = 0x2
+ *fill*             0x1020          0x200
+
+reserve_data_0x1022
+                    0x1022          0x2
+                    0x1024                  . = 0x2
+ *fill*             0x1022          0x200
+
+reserve_data_0x1024
+                    0x1024          0x4
+                    0x1028                  . = 0x4
+ *fill*             0x1024          0x400
+
+reserve_data_0x1028
+                    0x1028         0x28
+                    0x1050                  . = 0x28
+ *fill*             0x1028         0x2800
                     0x0001                  __MPLAB_BUILD = 0x1
+                    0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_PK3 = 0x1
 LOAD p33EP512GP502
 LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
                     0x557f0                  __FICD = 0x557f0
@@ -486,7 +541,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
  .handle          0x0002fa          0xc jump_table
  *(.isr*)
  .isrerror_handler
-                  0x000306         0x3a build/default/production/mcc_generated_files/traps.o
+                  0x000306         0x3a build/default/debug/mcc_generated_files/traps.o
                   0x000306                  __OscillatorFail
                   0x00030e                  __StackError
                   0x000318                  __AddressError
@@ -494,10 +549,10 @@ LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libfx-elf.a
                   0x000328                  __DMACError
                   0x000330                  __HardTrapError
                   0x000338                  __SoftTrapError
- .isr.text        0x000340         0x6e build/default/production/mcc_generated_files/uart1.o
+ .isr.text        0x000340         0x6e build/default/debug/mcc_generated_files/uart1.o
                   0x000340                  __U1TXInterrupt
                   0x000398                  __U1ErrInterrupt
- .isr.text        0x0003ae         0x32 build/default/production/main.o
+ .isr.text        0x0003ae         0x32 build/default/debug/main.o
                   0x0003ae                  __U1RXInterrupt
  .isr             0x0003e0          0x4 default_isr
                   0x0003e0                  __DefaultInterrupt
@@ -640,59 +695,59 @@ __FUID3
 
 .debug_info       0x000000       0x556a
  *(.debug_info)
- .debug_info      0x000000        0x5c5 build/default/production/mcc_generated_files/pin_manager.o
- .debug_info      0x0005c5        0xbfa build/default/production/mcc_generated_files/mcc.o
- .debug_info      0x0011bf        0x65e build/default/production/mcc_generated_files/interrupt_manager.o
- .debug_info      0x00181d        0x5bc build/default/production/mcc_generated_files/traps.o
- .debug_info      0x001dd9        0xf15 build/default/production/mcc_generated_files/uart1.o
- .debug_info      0x002cee        0x90e build/default/production/mcc_generated_files/spi1.o
- .debug_info      0x0035fc       0x110e build/default/production/main.o
- .debug_info      0x00470a        0xe60 build/default/production/bmp280.o
+ .debug_info      0x000000        0x5c5 build/default/debug/mcc_generated_files/pin_manager.o
+ .debug_info      0x0005c5        0xbfa build/default/debug/mcc_generated_files/mcc.o
+ .debug_info      0x0011bf        0x65e build/default/debug/mcc_generated_files/interrupt_manager.o
+ .debug_info      0x00181d        0x5bc build/default/debug/mcc_generated_files/traps.o
+ .debug_info      0x001dd9        0xf15 build/default/debug/mcc_generated_files/uart1.o
+ .debug_info      0x002cee        0x90e build/default/debug/mcc_generated_files/spi1.o
+ .debug_info      0x0035fc       0x110e build/default/debug/main.o
+ .debug_info      0x00470a        0xe60 build/default/debug/bmp280.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0xaf6
  *(.debug_abbrev)
- .debug_abbrev    0x000000         0xc5 build/default/production/mcc_generated_files/pin_manager.o
- .debug_abbrev    0x0000c5        0x1fb build/default/production/mcc_generated_files/mcc.o
- .debug_abbrev    0x0002c0         0xb4 build/default/production/mcc_generated_files/interrupt_manager.o
- .debug_abbrev    0x000374        0x10d build/default/production/mcc_generated_files/traps.o
- .debug_abbrev    0x000481        0x1e4 build/default/production/mcc_generated_files/uart1.o
- .debug_abbrev    0x000665        0x158 build/default/production/mcc_generated_files/spi1.o
- .debug_abbrev    0x0007bd        0x1ab build/default/production/main.o
- .debug_abbrev    0x000968        0x18e build/default/production/bmp280.o
+ .debug_abbrev    0x000000         0xc5 build/default/debug/mcc_generated_files/pin_manager.o
+ .debug_abbrev    0x0000c5        0x1fb build/default/debug/mcc_generated_files/mcc.o
+ .debug_abbrev    0x0002c0         0xb4 build/default/debug/mcc_generated_files/interrupt_manager.o
+ .debug_abbrev    0x000374        0x10d build/default/debug/mcc_generated_files/traps.o
+ .debug_abbrev    0x000481        0x1e4 build/default/debug/mcc_generated_files/uart1.o
+ .debug_abbrev    0x000665        0x158 build/default/debug/mcc_generated_files/spi1.o
+ .debug_abbrev    0x0007bd        0x1ab build/default/debug/main.o
+ .debug_abbrev    0x000968        0x18e build/default/debug/bmp280.o
 
 .debug_line       0x000000        0xba8
  *(.debug_line)
- .debug_line      0x000000        0x116 build/default/production/mcc_generated_files/pin_manager.o
- .debug_line      0x000116        0x17e build/default/production/mcc_generated_files/mcc.o
- .debug_line      0x000294        0x10d build/default/production/mcc_generated_files/interrupt_manager.o
- .debug_line      0x0003a1        0x136 build/default/production/mcc_generated_files/traps.o
- .debug_line      0x0004d7        0x19b build/default/production/mcc_generated_files/uart1.o
- .debug_line      0x000672        0x151 build/default/production/mcc_generated_files/spi1.o
- .debug_line      0x0007c3        0x17b build/default/production/main.o
- .debug_line      0x00093e        0x26a build/default/production/bmp280.o
+ .debug_line      0x000000        0x116 build/default/debug/mcc_generated_files/pin_manager.o
+ .debug_line      0x000116        0x17e build/default/debug/mcc_generated_files/mcc.o
+ .debug_line      0x000294        0x10d build/default/debug/mcc_generated_files/interrupt_manager.o
+ .debug_line      0x0003a1        0x136 build/default/debug/mcc_generated_files/traps.o
+ .debug_line      0x0004d7        0x19b build/default/debug/mcc_generated_files/uart1.o
+ .debug_line      0x000672        0x151 build/default/debug/mcc_generated_files/spi1.o
+ .debug_line      0x0007c3        0x17b build/default/debug/main.o
+ .debug_line      0x00093e        0x26a build/default/debug/bmp280.o
 
 .debug_frame      0x000000        0x872
  *(.debug_frame)
- .debug_frame     0x000000         0x30 build/default/production/mcc_generated_files/pin_manager.o
- .debug_frame     0x000030        0x19c build/default/production/mcc_generated_files/mcc.o
- .debug_frame     0x0001cc         0x30 build/default/production/mcc_generated_files/interrupt_manager.o
- .debug_frame     0x0001fc         0xb0 build/default/production/mcc_generated_files/traps.o
- .debug_frame     0x0002ac        0x1b2 build/default/production/mcc_generated_files/uart1.o
- .debug_frame     0x00045e         0xd8 build/default/production/mcc_generated_files/spi1.o
- .debug_frame     0x000536         0xd2 build/default/production/main.o
- .debug_frame     0x000608        0x26a build/default/production/bmp280.o
+ .debug_frame     0x000000         0x30 build/default/debug/mcc_generated_files/pin_manager.o
+ .debug_frame     0x000030        0x19c build/default/debug/mcc_generated_files/mcc.o
+ .debug_frame     0x0001cc         0x30 build/default/debug/mcc_generated_files/interrupt_manager.o
+ .debug_frame     0x0001fc         0xb0 build/default/debug/mcc_generated_files/traps.o
+ .debug_frame     0x0002ac        0x1b2 build/default/debug/mcc_generated_files/uart1.o
+ .debug_frame     0x00045e         0xd8 build/default/debug/mcc_generated_files/spi1.o
+ .debug_frame     0x000536         0xd2 build/default/debug/main.o
+ .debug_frame     0x000608        0x26a build/default/debug/bmp280.o
 
 .debug_str        0x000000        0x1d5
  *(.debug_str)
- .debug_str       0x000000         0x16 build/default/production/mcc_generated_files/pin_manager.o
- .debug_str       0x000016         0x36 build/default/production/mcc_generated_files/mcc.o
- .debug_str       0x00004c         0x1c build/default/production/mcc_generated_files/interrupt_manager.o
- .debug_str       0x000068         0x24 build/default/production/mcc_generated_files/traps.o
- .debug_str       0x00008c         0x30 build/default/production/mcc_generated_files/uart1.o
- .debug_str       0x0000bc         0x5a build/default/production/mcc_generated_files/spi1.o
- .debug_str       0x000116         0x5f build/default/production/main.o
- .debug_str       0x000175         0x60 build/default/production/bmp280.o
+ .debug_str       0x000000         0x16 build/default/debug/mcc_generated_files/pin_manager.o
+ .debug_str       0x000016         0x36 build/default/debug/mcc_generated_files/mcc.o
+ .debug_str       0x00004c         0x1c build/default/debug/mcc_generated_files/interrupt_manager.o
+ .debug_str       0x000068         0x24 build/default/debug/mcc_generated_files/traps.o
+ .debug_str       0x00008c         0x30 build/default/debug/mcc_generated_files/uart1.o
+ .debug_str       0x0000bc         0x5a build/default/debug/mcc_generated_files/spi1.o
+ .debug_str       0x000116         0x5f build/default/debug/main.o
+ .debug_str       0x000175         0x60 build/default/debug/bmp280.o
 
 .debug_loc
  *(.debug_loc)
@@ -704,21 +759,21 @@ __FUID3
                   0x000000        0x6c2
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x2d build/default/production/mcc_generated_files/pin_manager.o
+                  0x000000         0x2d build/default/debug/mcc_generated_files/pin_manager.o
  .debug_pubnames
-                  0x00002d        0x190 build/default/production/mcc_generated_files/mcc.o
+                  0x00002d        0x190 build/default/debug/mcc_generated_files/mcc.o
  .debug_pubnames
-                  0x0001bd         0x2b build/default/production/mcc_generated_files/interrupt_manager.o
+                  0x0001bd         0x2b build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_pubnames
-                  0x0001e8         0xa4 build/default/production/mcc_generated_files/traps.o
+                  0x0001e8         0xa4 build/default/debug/mcc_generated_files/traps.o
  .debug_pubnames
-                  0x00028c        0x154 build/default/production/mcc_generated_files/uart1.o
+                  0x00028c        0x154 build/default/debug/mcc_generated_files/uart1.o
  .debug_pubnames
-                  0x0003e0         0xae build/default/production/mcc_generated_files/spi1.o
+                  0x0003e0         0xae build/default/debug/mcc_generated_files/spi1.o
  .debug_pubnames
-                  0x00048e         0x9d build/default/production/main.o
+                  0x00048e         0x9d build/default/debug/main.o
  .debug_pubnames
-                  0x00052b        0x197 build/default/production/bmp280.o
+                  0x00052b        0x197 build/default/debug/bmp280.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -726,21 +781,21 @@ __FUID3
 .debug_aranges    0x000000         0xf8
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/mcc_generated_files/pin_manager.o
+                  0x000000         0x18 build/default/debug/mcc_generated_files/pin_manager.o
  .debug_aranges
-                  0x000018         0x18 build/default/production/mcc_generated_files/mcc.o
+                  0x000018         0x18 build/default/debug/mcc_generated_files/mcc.o
  .debug_aranges
-                  0x000030         0x18 build/default/production/mcc_generated_files/interrupt_manager.o
+                  0x000030         0x18 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_aranges
-                  0x000048         0x50 build/default/production/mcc_generated_files/traps.o
+                  0x000048         0x50 build/default/debug/mcc_generated_files/traps.o
  .debug_aranges
-                  0x000098         0x18 build/default/production/mcc_generated_files/uart1.o
+                  0x000098         0x18 build/default/debug/mcc_generated_files/uart1.o
  .debug_aranges
-                  0x0000b0         0x18 build/default/production/mcc_generated_files/spi1.o
+                  0x0000b0         0x18 build/default/debug/mcc_generated_files/spi1.o
  .debug_aranges
-                  0x0000c8         0x18 build/default/production/main.o
+                  0x0000c8         0x18 build/default/debug/main.o
  .debug_aranges
-                  0x0000e0         0x18 build/default/production/bmp280.o
+                  0x0000e0         0x18 build/default/debug/bmp280.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -1843,7 +1898,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30
 LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-c-elf.a
 END GROUP
-OUTPUT(dist/default/production/flightsketch.dev1.X.production.elf elf32-pic30)
+OUTPUT(dist/default/debug/flightsketch.dev1.X.debug.elf elf32-pic30)
 LOAD FGS
 LOAD jump_table
 LOAD default_isr
@@ -1852,40 +1907,40 @@ LOAD data_init
 .debug_pubtypes
                   0x0000f8        0x67f
  .debug_pubtypes
-                  0x0000f8         0x61 build/default/production/mcc_generated_files/pin_manager.o
+                  0x0000f8         0x61 build/default/debug/mcc_generated_files/pin_manager.o
  .debug_pubtypes
-                  0x000159         0xdd build/default/production/mcc_generated_files/mcc.o
+                  0x000159         0xdd build/default/debug/mcc_generated_files/mcc.o
  .debug_pubtypes
-                  0x000236         0x78 build/default/production/mcc_generated_files/interrupt_manager.o
+                  0x000236         0x78 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_pubtypes
-                  0x0002ae         0x94 build/default/production/mcc_generated_files/traps.o
+                  0x0002ae         0x94 build/default/debug/mcc_generated_files/traps.o
  .debug_pubtypes
-                  0x000342        0x113 build/default/production/mcc_generated_files/uart1.o
+                  0x000342        0x113 build/default/debug/mcc_generated_files/uart1.o
  .debug_pubtypes
-                  0x000455         0x9c build/default/production/mcc_generated_files/spi1.o
+                  0x000455         0x9c build/default/debug/mcc_generated_files/spi1.o
  .debug_pubtypes
-                  0x0004f1        0x190 build/default/production/main.o
+                  0x0004f1        0x190 build/default/debug/main.o
  .debug_pubtypes
-                  0x000681         0xf6 build/default/production/bmp280.o
+                  0x000681         0xf6 build/default/debug/bmp280.o
 
 __c30_signature
                   0x000777         0xea
  __c30_signature
-                  0x000777          0x6 build/default/production/mcc_generated_files/pin_manager.o
+                  0x000777          0x6 build/default/debug/mcc_generated_files/pin_manager.o
  __c30_signature
-                  0x00077d          0x6 build/default/production/mcc_generated_files/mcc.o
+                  0x00077d          0x6 build/default/debug/mcc_generated_files/mcc.o
  __c30_signature
-                  0x000783          0x6 build/default/production/mcc_generated_files/interrupt_manager.o
+                  0x000783          0x6 build/default/debug/mcc_generated_files/interrupt_manager.o
  __c30_signature
-                  0x000789          0x6 build/default/production/mcc_generated_files/traps.o
+                  0x000789          0x6 build/default/debug/mcc_generated_files/traps.o
  __c30_signature
-                  0x00078f          0x6 build/default/production/mcc_generated_files/uart1.o
+                  0x00078f          0x6 build/default/debug/mcc_generated_files/uart1.o
  __c30_signature
-                  0x000795          0x6 build/default/production/mcc_generated_files/spi1.o
+                  0x000795          0x6 build/default/debug/mcc_generated_files/spi1.o
  __c30_signature
-                  0x00079b          0x6 build/default/production/main.o
+                  0x00079b          0x6 build/default/debug/main.o
  __c30_signature
-                  0x0007a1          0x6 build/default/production/bmp280.o
+                  0x0007a1          0x6 build/default/debug/bmp280.o
  __c30_signature
                   0x0007a7          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
  __c30_signature
@@ -1949,91 +2004,91 @@ __c30_signature
  __c30_signature
                   0x00085b          0x6 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(umuldi3.epeo)
 
-.ndata              0x1000          0x2
- .ndata             0x1000          0x2 build/default/production/mcc_generated_files/traps.o
+.ndata              0x1050          0x2
+ .ndata             0x1050          0x2 build/default/debug/mcc_generated_files/traps.o
 
-.nbss               0x1002          0x4
- .nbss              0x1002          0x2 build/default/production/main.o
-                    0x1002                  _sendData
- .nbss              0x1004          0x2 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(errno.epeo)
-                    0x1004                  _errno
+.nbss               0x1052          0x4
+ .nbss              0x1052          0x2 build/default/debug/main.o
+                    0x1052                  _sendData
+ .nbss              0x1054          0x2 c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\libm-elf.a(errno.epeo)
+                    0x1054                  _errno
 
-.bss                0x1006         0x66
- .bss               0x1006         0x2c build/default/production/main.o
-                    0x1006                  _bmp
- .bss               0x1032         0x20 build/default/production/mcc_generated_files/traps.o
- .bss               0x1052         0x1a build/default/production/mcc_generated_files/uart1.o
+.bss                0x1056         0x66
+ .bss               0x1056         0x2c build/default/debug/main.o
+                    0x1056                  _bmp
+ .bss               0x1082         0x20 build/default/debug/mcc_generated_files/traps.o
+ .bss               0x10a2         0x1a build/default/debug/mcc_generated_files/uart1.o
 
 .config_IESO      0x0557f8          0x2
- .config_IESO     0x0557f8          0x2 build/default/production/mcc_generated_files/mcc.o
+ .config_IESO     0x0557f8          0x2 build/default/debug/mcc_generated_files/mcc.o
 
 .config_FCKSM     0x0557f6          0x2
- .config_FCKSM    0x0557f6          0x2 build/default/production/mcc_generated_files/mcc.o
+ .config_FCKSM    0x0557f6          0x2 build/default/debug/mcc_generated_files/mcc.o
 
 .config_FWDTEN    0x0557f4          0x2
  .config_FWDTEN
-                  0x0557f4          0x2 build/default/production/mcc_generated_files/mcc.o
+                  0x0557f4          0x2 build/default/debug/mcc_generated_files/mcc.o
 
 .config_WDTWIN    0x0557f2          0x2
  .config_WDTWIN
-                  0x0557f2          0x2 build/default/production/mcc_generated_files/mcc.o
+                  0x0557f2          0x2 build/default/debug/mcc_generated_files/mcc.o
 
 .config_JTAGEN    0x0557f0          0x2
  .config_JTAGEN
-                  0x0557f0          0x2 build/default/production/mcc_generated_files/mcc.o
+                  0x0557f0          0x2 build/default/debug/mcc_generated_files/mcc.o
 
 .ivt._OscillatorFail
                   0x000004          0x2
  .ivt._OscillatorFail
-                  0x000004          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x000004          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._StackError
                   0x00000a          0x2
  .ivt._StackError
-                  0x00000a          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x00000a          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._AddressError
                   0x000006          0x2
  .ivt._AddressError
-                  0x000006          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x000006          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._MathError
                   0x00000c          0x2
  .ivt._MathError
-                  0x00000c          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x00000c          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._DMACError
                   0x00000e          0x2
  .ivt._DMACError
-                  0x00000e          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x00000e          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._HardTrapError
                   0x000008          0x2
  .ivt._HardTrapError
-                  0x000008          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x000008          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._SoftTrapError
                   0x000010          0x2
  .ivt._SoftTrapError
-                  0x000010          0x2 build/default/production/mcc_generated_files/traps.o
+                  0x000010          0x2 build/default/debug/mcc_generated_files/traps.o
 
 .ivt._U1TXInterrupt
                   0x00002c          0x2
  .ivt._U1TXInterrupt
-                  0x00002c          0x2 build/default/production/mcc_generated_files/uart1.o
+                  0x00002c          0x2 build/default/debug/mcc_generated_files/uart1.o
 
 .ivt._U1ErrInterrupt
                   0x000096          0x2
  .ivt._U1ErrInterrupt
-                  0x000096          0x2 build/default/production/mcc_generated_files/uart1.o
+                  0x000096          0x2 build/default/debug/mcc_generated_files/uart1.o
 
 .ivt._U1RXInterrupt
                   0x00002a          0x2
  .ivt._U1RXInterrupt
-                  0x00002a          0x2 build/default/production/main.o
+                  0x00002a          0x2 build/default/debug/main.o
 
 .text             0x000e18       0x18b0
- .text            0x000e18       0x109a build/default/production/bmp280.o
+ .text            0x000e18       0x109a build/default/debug/bmp280.o
                   0x000e18                  _bmp280_get_regs
                   0x000e6e                  _bmp280_set_regs
                   0x000f30                  _bmp280_soft_reset
@@ -2050,13 +2105,13 @@ __c30_signature
                   0x0018d0                  _bmp280_comp_temp_double
                   0x0019b2                  _bmp280_comp_pres_double
                   0x001b54                  _bmp280_compute_meas_time
- .text            0x001eb2        0x2cc build/default/production/main.o
+ .text            0x001eb2        0x2cc build/default/debug/main.o
                   0x001eb2                  _BMP280_SPI_bus_read
                   0x001f42                  _BMP280_SPI_bus_write
                   0x001f88                  _BMP280_delay_msek
                   0x001faa                  _sendDataPacket
                   0x0020f4                  _main
- .text            0x00217e        0x214 build/default/production/mcc_generated_files/uart1.o
+ .text            0x00217e        0x214 build/default/debug/mcc_generated_files/uart1.o
                   0x00217e                  _UART1_Initialize
                   0x0021c0                  _UART1_Read
                   0x0021f8                  _UART1_ReadBuffer
@@ -2069,7 +2124,7 @@ __c30_signature
                   0x00235a                  _UART1_ReceiveBufferIsEmpty
                   0x002372                  _UART1_TransmitBufferIsFull
                   0x00238a                  _UART1_StatusGet
- .text            0x002392        0x188 build/default/production/mcc_generated_files/mcc.o
+ .text            0x002392        0x188 build/default/debug/mcc_generated_files/mcc.o
                   0x0023b0                  _SYSTEM_Initialize
                   0x0023c6                  _OSCILLATOR_Initialize
                   0x002406                  _SYSTEM_GetResetCause
@@ -2082,7 +2137,7 @@ __c30_signature
                   0x0024e8                  _SYSTEM_ResetCauseFromWatchdogTimer
                   0x002502                  _SYSTEM_ResetCauseClear
                   0x002512                  _SYSTEM_ResetCauseClearAll
- .text            0x00251a        0x14e build/default/production/mcc_generated_files/spi1.o
+ .text            0x00251a        0x14e build/default/debug/mcc_generated_files/spi1.o
                   0x00251a                  _SPI1_Initialize
                   0x00252c                  _SPI1_Exchange
                   0x00255c                  _SPI1_ExchangeBuffer
@@ -2090,20 +2145,20 @@ __c30_signature
                   0x002636                  _SPI1_Exchange8bitBuffer
                   0x00264a                  _SPI1_TransferModeGet
                   0x002660                  _SPI1_StatusGet
- .text            0x002668         0x60 build/default/production/mcc_generated_files/pin_manager.o
+ .text            0x002668         0x60 build/default/debug/mcc_generated_files/pin_manager.o
                   0x002668                  _PIN_MANAGER_Initialize
 
 .dinit            0x0026c8         0x28
  .dinit           0x0026c8         0x28 data_init
 
 .text             0x0026f0         0x24
- .text            0x0026f0         0x24 build/default/production/mcc_generated_files/interrupt_manager.o
+ .text            0x0026f0         0x24 build/default/debug/mcc_generated_files/interrupt_manager.o
                   0x0026f0                  _INTERRUPT_Initialize
 
 .init.delay32     0x002714         0x1c
  .init.delay32    0x002714         0x1c c:/program files (x86)/microchip/xc16/v1.33/bin/bin/../../lib\liblega-pic30-elf.a(delay32ep.Leo)
                   0x002714                  ___delay32
 
-.text             0x002730         0x16
- .text            0x002730         0x16 build/default/production/mcc_generated_files/traps.o
+.text             0x002730         0x18
+ .text            0x002730         0x18 build/default/debug/mcc_generated_files/traps.o
                   0x002730                  _TRAPS_halt_on_error
