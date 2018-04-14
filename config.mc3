@@ -971,7 +971,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TI" settingAlias="enable"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="INTERNAL OSCILLATOR" registerAlias="REFOCON" settingAlias="RODIV" alias="Base clock value/2"/>
@@ -1315,7 +1315,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR1" registerAlias="TCON"/>
-         <value>32800</value>
+         <value>32</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="localClockFreq"/>
@@ -3783,7 +3783,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="callBackRate"/>
-         <value>0.999993473</value>
+         <value>0.9999934730</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="System Module" registerAlias="FOSC" settingAlias="FCKSM" alias="CSECME"/>
@@ -3791,7 +3791,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TCON" settingAlias="TON"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="CNENB" settingAlias="CNIEB14"/>
@@ -4793,11 +4793,11 @@
       </entry>
       <entry>
          <file>mcc_generated_files/tmr1.c</file>
-         <hash>663fabb1d43df46a362c9b5e9ba29d34dffe213224e8744df8b002151e3b6e2a</hash>
+         <hash>77a4f596421dd923c0d81bc1d6285d443d20c08ff613b2718b160927153b35fb</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/tmr1.h</file>
-         <hash>089c62124d7140a834d808dffd24794c1585ec41c88598ba9c62e666ee60811c</hash>
+         <hash>612fb79e6cb2f67cea8010f2e738a1017151d2af52f1373a180f46986364f98c</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/traps.h</file>
@@ -4817,7 +4817,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files/interrupt_manager.c</file>
-         <hash>8bde700e9123fabb904f24bcd4e7d626534f19915e16ee1e43df8f3d0fb3ab75</hash>
+         <hash>891d920bc5bd8b6c141b3aa4c416f3364458b8e64799a057130e5e4e49335773</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/uart1.c</file>
