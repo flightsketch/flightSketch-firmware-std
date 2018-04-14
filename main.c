@@ -29,6 +29,8 @@ void BMP280_delay_msek(uint32_t msek);
 struct bmp280_dev bmp;
 bool sendData = false;
 
+int32_t maxAlt;
+
 int8_t  BMP280_SPI_bus_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt)
 {
     __delay_ms(1);
@@ -66,6 +68,71 @@ int8_t  BMP280_SPI_bus_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_da
 	return (int8_t)iError;
 }
 
+void EEPROM_Read(){
+//void EEPROM_Write(uint8_t start_address, uint8_t *data_read, uint8_t cnt){
+    
+    EEPROM_WP_SetHigh();
+    EEPROM_HOLD_SetHigh();
+
+    EEPROM_CS_SetLow();
+    __delay_us(1);
+//    SPI1_Exchange8bit(0b00000011);
+//    __delay_us(1);
+//    SPI1_Exchange8bit(0b00000000);
+//    __delay_us(1);
+//    SPI1_Exchange8bit(0b00000000);
+//    __delay_us(1);
+//    SPI1_Exchange8bit(0b00000000);
+//    __delay_us(1);
+    
+    SPI1_Exchange8bit(0b00000101);
+    UART1_Write(SPI1_Exchange8bit(0xFF));
+    __delay_ms(5);
+    UART1_Write(SPI1_Exchange8bit(0xFF));
+    
+    __delay_ms(5);
+    UART1_Write(SPI1_Exchange8bit(0xFF));
+    
+    __delay_ms(5);
+    UART1_Write(SPI1_Exchange8bit(0xFF));
+    
+    __delay_ms(5);
+    
+    while (SPI1STATbits.SRMPT == false);
+    EEPROM_CS_SetHigh();
+    
+}
+void EEPROM_Write(){
+//void EEPROM_Read(uint8_t start_address, uint8_t *data_read, uint8_t cnt){
+    
+    EEPROM_WP_SetHigh();
+    EEPROM_HOLD_SetHigh();
+
+    EEPROM_CS_SetLow();
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000110);
+    while (SPI1STATbits.SRMPT == false);
+    EEPROM_CS_SetHigh();
+    __delay_us(1);
+    EEPROM_CS_SetLow();
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000010);
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000000);
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000000);
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000000);
+    __delay_us(1);
+    
+    SPI1_Exchange8bit(0x42);
+    __delay_us(1);
+    while (SPI1STATbits.SRMPT == false);
+    EEPROM_CS_SetHigh();
+    
+    UART1_Write(0x43);
+    
+}
 
 void  BMP280_delay_msek(uint32_t msek)
 {
@@ -143,10 +210,12 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
     {   
         rx = U1RXREG;
         if (rx == START_PACKET){
-            sendData = true;
+//            sendData = true;
+            EEPROM_Write();
         }
         else if (rx == STOP_PACKET){
             sendData = false;
+            EEPROM_Read();
         }
 //        *uart1_obj.rxTail = U1RXREG;
 //
@@ -173,11 +242,16 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
    
 }
 
+void TMR1_CallBack(void){
+    sendDataPacket();
+}
+
 int main(int argc, char** argv) {
 
     
     
     SYSTEM_Initialize();
+    
     BMP280_CS_SetHigh();
     int8_t rslt;
     char tx[] = {0x60, 0xB6};
@@ -196,8 +270,8 @@ int main(int argc, char** argv) {
 
     rslt = bmp280_get_config(&conf, &bmp);
 
-    conf.filter = BMP280_FILTER_COEFF_2;
-    conf.os_pres = BMP280_OS_16X;
+    conf.filter = BMP280_FILTER_COEFF_16;
+    conf.os_pres = BMP280_OS_8X;
     conf.os_temp = BMP280_OS_1X;
     conf.odr = BMP280_ODR_0_5_MS;
 
@@ -209,6 +283,8 @@ int main(int argc, char** argv) {
     /* Check if rslt == BMP280_OK, if not, then handle accordingly */
     rslt = bmp280_get_config(&conf, &bmp);
 
+    TMR1_Start();
+    
     while(1){
         if (sendData){
             sendDataPacket();

@@ -3,14 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/bmp280.c</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/mcc_generated_files/spi1.h</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/bmp280_defs.h</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/bmp280.h</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/mcc_generated_files/uart1.h</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/mcc_generated_files/uart1.c</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/mcc_generated_files/spi1.c</file>
-            <file>file:/C:/Users/russ/Desktop/flightsketch.dev1.X/main.c</file>
+            <file>file:/Users/russ/MPLABXProjects/FlightSketch/mcc_generated_files/tmr1.c</file>
+            <file>file:/Users/russ/MPLABXProjects/FlightSketch/mcc_generated_files/uart1.c</file>
+            <file>file:/Users/russ/MPLABXProjects/FlightSketch/mcc_generated_files/tmr1.h</file>
+            <file>file:/Users/russ/MPLABXProjects/FlightSketch/main.c</file>
         </group>
     </open-files>
 </project-private>

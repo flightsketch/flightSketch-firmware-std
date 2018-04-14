@@ -55,6 +55,444 @@
 */
 /**
   @Summary
+    Sets the GPIO pin, RA4, high using LATA4.
+
+  @Description
+    Sets the GPIO pin, RA4, high using LATA4.
+
+  @Preconditions
+    The RA4 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RA4 high (1)
+    EEPROM_WP_SetHigh();
+    </code>
+
+*/
+#define EEPROM_WP_SetHigh()          _LATA4 = 1
+/**
+  @Summary
+    Sets the GPIO pin, RA4, low using LATA4.
+
+  @Description
+    Sets the GPIO pin, RA4, low using LATA4.
+
+  @Preconditions
+    The RA4 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RA4 low (0)
+    EEPROM_WP_SetLow();
+    </code>
+
+*/
+#define EEPROM_WP_SetLow()           _LATA4 = 0
+/**
+  @Summary
+    Toggles the GPIO pin, RA4, using LATA4.
+
+  @Description
+    Toggles the GPIO pin, RA4, using LATA4.
+
+  @Preconditions
+    The RA4 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RA4
+    EEPROM_WP_Toggle();
+    </code>
+
+*/
+#define EEPROM_WP_Toggle()           _LATA4 ^= 1
+/**
+  @Summary
+    Reads the value of the GPIO pin, RA4.
+
+  @Description
+    Reads the value of the GPIO pin, RA4.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RA4
+    postValue = EEPROM_WP_GetValue();
+    </code>
+
+*/
+#define EEPROM_WP_GetValue()         _RA4
+/**
+  @Summary
+    Configures the GPIO pin, RA4, as an input.
+
+  @Description
+    Configures the GPIO pin, RA4, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RA4 as an input
+    EEPROM_WP_SetDigitalInput();
+    </code>
+
+*/
+#define EEPROM_WP_SetDigitalInput()  _TRISA4 = 1
+/**
+  @Summary
+    Configures the GPIO pin, RA4, as an output.
+
+  @Description
+    Configures the GPIO pin, RA4, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RA4 as an output
+    EEPROM_WP_SetDigitalOutput();
+    </code>
+
+*/
+#define EEPROM_WP_SetDigitalOutput() _TRISA4 = 0
+/**
+  @Summary
+    Sets the GPIO pin, RB15, high using LATB15.
+
+  @Description
+    Sets the GPIO pin, RB15, high using LATB15.
+
+  @Preconditions
+    The RB15 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB15 high (1)
+    EEPROM_CS_SetHigh();
+    </code>
+
+*/
+#define EEPROM_CS_SetHigh()          _LATB15 = 1
+/**
+  @Summary
+    Sets the GPIO pin, RB15, low using LATB15.
+
+  @Description
+    Sets the GPIO pin, RB15, low using LATB15.
+
+  @Preconditions
+    The RB15 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB15 low (0)
+    EEPROM_CS_SetLow();
+    </code>
+
+*/
+#define EEPROM_CS_SetLow()           _LATB15 = 0
+/**
+  @Summary
+    Toggles the GPIO pin, RB15, using LATB15.
+
+  @Description
+    Toggles the GPIO pin, RB15, using LATB15.
+
+  @Preconditions
+    The RB15 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB15
+    EEPROM_CS_Toggle();
+    </code>
+
+*/
+#define EEPROM_CS_Toggle()           _LATB15 ^= 1
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB15.
+
+  @Description
+    Reads the value of the GPIO pin, RB15.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB15
+    postValue = EEPROM_CS_GetValue();
+    </code>
+
+*/
+#define EEPROM_CS_GetValue()         _RB15
+/**
+  @Summary
+    Configures the GPIO pin, RB15, as an input.
+
+  @Description
+    Configures the GPIO pin, RB15, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB15 as an input
+    EEPROM_CS_SetDigitalInput();
+    </code>
+
+*/
+#define EEPROM_CS_SetDigitalInput()  _TRISB15 = 1
+/**
+  @Summary
+    Configures the GPIO pin, RB15, as an output.
+
+  @Description
+    Configures the GPIO pin, RB15, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB15 as an output
+    EEPROM_CS_SetDigitalOutput();
+    </code>
+
+*/
+#define EEPROM_CS_SetDigitalOutput() _TRISB15 = 0
+/**
+  @Summary
+    Sets the GPIO pin, RB4, high using LATB4.
+
+  @Description
+    Sets the GPIO pin, RB4, high using LATB4.
+
+  @Preconditions
+    The RB4 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB4 high (1)
+    EEPROM_HOLD_SetHigh();
+    </code>
+
+*/
+#define EEPROM_HOLD_SetHigh()          _LATB4 = 1
+/**
+  @Summary
+    Sets the GPIO pin, RB4, low using LATB4.
+
+  @Description
+    Sets the GPIO pin, RB4, low using LATB4.
+
+  @Preconditions
+    The RB4 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB4 low (0)
+    EEPROM_HOLD_SetLow();
+    </code>
+
+*/
+#define EEPROM_HOLD_SetLow()           _LATB4 = 0
+/**
+  @Summary
+    Toggles the GPIO pin, RB4, using LATB4.
+
+  @Description
+    Toggles the GPIO pin, RB4, using LATB4.
+
+  @Preconditions
+    The RB4 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB4
+    EEPROM_HOLD_Toggle();
+    </code>
+
+*/
+#define EEPROM_HOLD_Toggle()           _LATB4 ^= 1
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB4.
+
+  @Description
+    Reads the value of the GPIO pin, RB4.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB4
+    postValue = EEPROM_HOLD_GetValue();
+    </code>
+
+*/
+#define EEPROM_HOLD_GetValue()         _RB4
+/**
+  @Summary
+    Configures the GPIO pin, RB4, as an input.
+
+  @Description
+    Configures the GPIO pin, RB4, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB4 as an input
+    EEPROM_HOLD_SetDigitalInput();
+    </code>
+
+*/
+#define EEPROM_HOLD_SetDigitalInput()  _TRISB4 = 1
+/**
+  @Summary
+    Configures the GPIO pin, RB4, as an output.
+
+  @Description
+    Configures the GPIO pin, RB4, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB4 as an output
+    EEPROM_HOLD_SetDigitalOutput();
+    </code>
+
+*/
+#define EEPROM_HOLD_SetDigitalOutput() _TRISB4 = 0
+/**
+  @Summary
     Sets the GPIO pin, RB5, high using LATB5.
 
   @Description
