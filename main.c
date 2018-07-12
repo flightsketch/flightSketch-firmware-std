@@ -29,6 +29,8 @@ void BMP280_delay_msek(uint32_t msek);
 struct bmp280_dev bmp;
 bool sendData = false;
 
+char update_due = 0;
+
 int32_t alt = 0;
 int32_t rawAlt = 0;
 int32_t maxAlt = 0;
@@ -79,27 +81,27 @@ void EEPROM_Read(){
 
     EEPROM_CS_SetLow();
     __delay_us(1);
-//    SPI1_Exchange8bit(0b00000011);
-//    __delay_us(1);
-//    SPI1_Exchange8bit(0b00000000);
-//    __delay_us(1);
-//    SPI1_Exchange8bit(0b00000000);
-//    __delay_us(1);
-//    SPI1_Exchange8bit(0b00000000);
-//    __delay_us(1);
+    SPI1_Exchange8bit(0b00000011);
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000000);
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000000);
+    __delay_us(1);
+    SPI1_Exchange8bit(0b00000000);
+    __delay_us(1);
     
-    SPI1_Exchange8bit(0b00000101);
+//    SPI1_Exchange8bit(0b00000101);
     UART1_Write(SPI1_Exchange8bit(0xFF));
-    __delay_ms(5);
-    UART1_Write(SPI1_Exchange8bit(0xFF));
-    
-    __delay_ms(5);
-    UART1_Write(SPI1_Exchange8bit(0xFF));
-    
-    __delay_ms(5);
-    UART1_Write(SPI1_Exchange8bit(0xFF));
-    
-    __delay_ms(5);
+//    __delay_ms(5);
+//    UART1_Write(SPI1_Exchange8bit(0xFF));
+//    
+//    __delay_ms(5);
+//    UART1_Write(SPI1_Exchange8bit(0xFF));
+//    
+//    __delay_ms(5);
+//    UART1_Write(SPI1_Exchange8bit(0xFF));
+//    
+//    __delay_ms(5);
     
     while (SPI1STATbits.SRMPT == false);
     EEPROM_CS_SetHigh();
@@ -151,9 +153,9 @@ void sendDataPacket(){
     uint8_t meas_dur = bmp280_compute_meas_time(&bmp);
     
     UART1_Write(0x1E);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write(0xA5);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write(0xE1);
 
     rslt = bmp280_get_uncomp_data(&ucomp_data, &bmp);
@@ -193,76 +195,36 @@ void sendDataPacket(){
     
 //    alt = (uint32_t) ((1.0 - pow((((float) pres64)/((float) 25939200)),0.190284)) * 145366.45 *10.0 +1500.0);
     LATBbits.LATB5 = 1;
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((temp32 >> (0 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((temp32 >> (1 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((temp32 >> (2 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((temp32 >> (3 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((alt+10000)) >> (0 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((alt+10000)) >> (1 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((alt+10000)) >> (2 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((alt+10000)) >> (3 * 8)) & 0xFF);
     __delay_ms(10);
     UART1_Write((((maxAlt+10000)) >> (0 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((maxAlt+10000)) >> (1 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((maxAlt+10000)) >> (2 * 8)) & 0xFF);
-    __delay_ms(10);
+    //__delay_ms(10);
     UART1_Write((((maxAlt+10000)) >> (3 * 8)) & 0xFF);
 }
 
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt( void )
-{
-    uint8_t rx;
-    IEC0bits.U1RXIE = 0;
-    while((U1STAbits.URXDA == 1))
-    {   
-        rx = U1RXREG;
-        if (rx == START_PACKET){
-            sendData = true;
-            maxAlt = alt;
-            refAlt = rawAlt;
-//            EEPROM_Write();
-        }
-        else if (rx == STOP_PACKET){
-            sendData = false;
-//            EEPROM_Read();
-        }
-//        *uart1_obj.rxTail = U1RXREG;
-//
-//        uart1_obj.rxTail++;
-//
-//        if(uart1_obj.rxTail == (uart1_rxByteQ + UART1_CONFIG_RX_BYTEQ_LENGTH))
-//        {
-//            uart1_obj.rxTail = uart1_rxByteQ;
-//        }
-//
-//        uart1_obj.rxStatus.s.empty = false;
-//        
-//        if(uart1_obj.rxTail == uart1_obj.rxHead)
-//        {
-//            //Sets the flag RX full
-//            uart1_obj.rxStatus.s.full = true;
-//            break;
-//        }
-        
-    }
 
-    IFS0bits.U1RXIF = 0;        // clear rx interupt
-    IEC0bits.U1RXIE = 1;        // enable rx interupt
-   
-}
 
 void TMR1_CallBack(void){
-    sendDataPacket();
+    update_due = 1;
 }
 
 int main(int argc, char** argv) {
@@ -270,6 +232,11 @@ int main(int argc, char** argv) {
     
     
     SYSTEM_Initialize();
+    
+    UART1_STATUS u1_status;
+    u1_status = UART1_StatusGet();
+    char rx;
+    char test = 0xfd;
     
     BMP280_CS_SetHigh();
     int8_t rslt;
@@ -289,7 +256,7 @@ int main(int argc, char** argv) {
 
     rslt = bmp280_get_config(&conf, &bmp);
 
-    conf.filter = BMP280_FILTER_COEFF_4;
+    conf.filter = BMP280_FILTER_COEFF_8;
     conf.os_pres = BMP280_OS_16X;
     conf.os_temp = BMP280_OS_1X;
     conf.odr = BMP280_ODR_0_5_MS;
@@ -305,10 +272,19 @@ int main(int argc, char** argv) {
     TMR1_Start();
     
     while(1){
-        if (sendData){
-            sendDataPacket();
+        if (update_due > 0){
+            update_due = 0;
+            if (sendData){
+                sendDataPacket();
+            }
         }
-        __delay_ms(10);
+        
+        if (UART1_TRANSFER_STATUS_RX_DATA_PRESENT & UART1_TransferStatusGet()){
+            rx = UART1_Read();
+            if (rx == test){
+                sendData = true;
+            }
+        }
     }
     return (EXIT_SUCCESS);
 }

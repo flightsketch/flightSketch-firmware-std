@@ -49,10 +49,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "uart1.h"
+#include "adc1.h"
+#include "tmr1.h"
 #include "interrupt_manager.h"
 #include "traps.h"
 #include "spi1.h"
-#include "tmr1.h"
 
 #define _XTAL_FREQ  69554375UL
 
