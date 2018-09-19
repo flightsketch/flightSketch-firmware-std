@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mcc_generated_files/mcc.h"
+#include "mcc_generated_files/adc1.h"
 #define FCY _XTAL_FREQ/2
 #include <libpic30.h>
 #include <math.h>
@@ -27,14 +28,17 @@ int8_t BMP280_SPI_bus_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data
 void BMP280_delay_msek(uint32_t msek);
 
 struct bmp280_dev bmp;
-bool sendData = false;
+bool sendData = true;
 
 char update_due = 0;
+char send_due = 0;
 
 int32_t alt = 0;
 int32_t rawAlt = 0;
 int32_t maxAlt = 0;
 int32_t refAlt = 0;
+
+int32_t  temp;
 
 int8_t  BMP280_SPI_bus_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt)
 {
@@ -145,6 +149,41 @@ void  BMP280_delay_msek(uint32_t msek)
 }
 
 void sendDataPacket(){
+    
+    
+    
+    UART1_Write(0xF5);
+    UART1_Write(0x01);
+    __delay_ms(1);
+    UART1_Write(0x0C);
+    UART1_Write(0x02);
+
+    UART1_Write((temp >> (0 * 8)) & 0xFF);
+    UART1_Write((temp >> (1 * 8)) & 0xFF);
+    UART1_Write((temp >> (2 * 8)) & 0xFF);
+    UART1_Write((temp >> (3 * 8)) & 0xFF);
+    
+
+    UART1_Write((((alt+10000)) >> (0 * 8)) & 0xFF);
+    UART1_Write((((alt+10000)) >> (1 * 8)) & 0xFF);
+    UART1_Write((((alt+10000)) >> (2 * 8)) & 0xFF);
+    UART1_Write((((alt+10000)) >> (3 * 8)) & 0xFF);
+    __delay_ms(10);
+    
+    UART1_Write((((maxAlt+10000)) >> (0 * 8)) & 0xFF);
+    UART1_Write((((maxAlt+10000)) >> (1 * 8)) & 0xFF);
+    UART1_Write((((maxAlt+10000)) >> (2 * 8)) & 0xFF);
+    UART1_Write((((maxAlt+10000)) >> (3 * 8)) & 0xFF);
+    UART1_Write(0x99);
+}
+
+
+
+void TMR1_CallBack(void){
+    update_due++;
+}
+
+void getAlt(){
     int8_t rslt;
     
     float altf;
@@ -152,30 +191,11 @@ void sendDataPacket(){
     struct bmp280_uncomp_data ucomp_data;
     uint8_t meas_dur = bmp280_compute_meas_time(&bmp);
     
-    UART1_Write(0x1E);
-    //__delay_ms(10);
-    UART1_Write(0xA5);
-    //__delay_ms(10);
-    UART1_Write(0xE1);
-
     rslt = bmp280_get_uncomp_data(&ucomp_data, &bmp);
-    /* Check if rslt == BMP280_OK, if not, then handle accordingly */
-//        LATBbits.LATB5 = 0;
-    int32_t  temp32 = bmp280_comp_temp_32bit(ucomp_data.uncomp_temp, &bmp);
-//        LATBbits.LATB5 = 1;
-//        LATBbits.LATB5 = 0;
-//        uint32_t pres32 = bmp280_comp_pres_32bit(ucomp_data.uncomp_press, &bmp);
-//        LATBbits.LATB5 = 1;
-//        LATBbits.LATB5 = 0;
+    
+    temp = bmp280_comp_temp_32bit(ucomp_data.uncomp_temp, &bmp);
     uint32_t pres64 = bmp280_comp_pres_64bit(ucomp_data.uncomp_press, &bmp);
-//        LATBbits.LATB5 = 1;
-//        LATBbits.LATB5 = 0;
-//        double temp = bmp280_comp_temp_double(ucomp_data.uncomp_temp, &bmp);
-//        LATBbits.LATB5 = 1;
-//        LATBbits.LATB5 = 0;
-//        double pres = bmp280_comp_pres_double(ucomp_data.uncomp_press, &bmp);
-//        LATBbits.LATB5 = 1;
-//        LATBbits.LATB5 = 0;
+    
     altf = pres64;
     altf = altf/256.0;
     altf = altf/101325.0;
@@ -190,41 +210,6 @@ void sendDataPacket(){
     if (alt>maxAlt){
         maxAlt = alt;
     }
-    
-    
-    
-//    alt = (uint32_t) ((1.0 - pow((((float) pres64)/((float) 25939200)),0.190284)) * 145366.45 *10.0 +1500.0);
-    LATBbits.LATB5 = 1;
-    //__delay_ms(10);
-    UART1_Write((temp32 >> (0 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((temp32 >> (1 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((temp32 >> (2 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((temp32 >> (3 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((alt+10000)) >> (0 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((alt+10000)) >> (1 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((alt+10000)) >> (2 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((alt+10000)) >> (3 * 8)) & 0xFF);
-    __delay_ms(10);
-    UART1_Write((((maxAlt+10000)) >> (0 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((maxAlt+10000)) >> (1 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((maxAlt+10000)) >> (2 * 8)) & 0xFF);
-    //__delay_ms(10);
-    UART1_Write((((maxAlt+10000)) >> (3 * 8)) & 0xFF);
-}
-
-
-
-void TMR1_CallBack(void){
-    update_due = 1;
 }
 
 int main(int argc, char** argv) {
@@ -236,7 +221,8 @@ int main(int argc, char** argv) {
     UART1_STATUS u1_status;
     u1_status = UART1_StatusGet();
     char rx;
-    char test = 0xfd;
+    char test = 0xf5;
+    int batt = 0;
     
     BMP280_CS_SetHigh();
     int8_t rslt;
@@ -272,17 +258,37 @@ int main(int argc, char** argv) {
     TMR1_Start();
     
     while(1){
+        
         if (update_due > 0){
             update_due = 0;
+            send_due++;
+            getAlt();
+        }
+        
+        if (send_due > 5){
+            send_due = 0;
             if (sendData){
                 sendDataPacket();
             }
+            ADC1_SamplingStart();
+            __delay_ms(1);
+            ADC1_SamplingStop();
+            batt = ADC1_Channel1ConversionResultGet();
+            UART1_Write(0xF5);
+            UART1_Write(0x02);
+            __delay_ms(1);
+            UART1_Write(0x02);
+            UART1_Write(0xF9);
+            UART1_Write(batt);
+            UART1_Write(batt>>8);
+            UART1_Write(0x99);
         }
         
         if (UART1_TRANSFER_STATUS_RX_DATA_PRESENT & UART1_TransferStatusGet()){
             rx = UART1_Read();
             if (rx == test){
-                sendData = true;
+                maxAlt = 0;
+                refAlt = rawAlt;
             }
         }
     }
