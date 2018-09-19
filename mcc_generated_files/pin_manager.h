@@ -72,11 +72,11 @@
   @Example
     <code>
     // Set RA0 high (1)
-    AN0_SetHigh();
+    channel_AN0_SetHigh();
     </code>
 
 */
-#define AN0_SetHigh()          _LATA0 = 1
+#define channel_AN0_SetHigh()          _LATA0 = 1
 /**
   @Summary
     Sets the GPIO pin, RA0, low using LATA0.
@@ -96,11 +96,11 @@
   @Example
     <code>
     // Set RA0 low (0)
-    AN0_SetLow();
+    channel_AN0_SetLow();
     </code>
 
 */
-#define AN0_SetLow()           _LATA0 = 0
+#define channel_AN0_SetLow()           _LATA0 = 0
 /**
   @Summary
     Toggles the GPIO pin, RA0, using LATA0.
@@ -120,11 +120,11 @@
   @Example
     <code>
     // Toggle RA0
-    AN0_Toggle();
+    channel_AN0_Toggle();
     </code>
 
 */
-#define AN0_Toggle()           _LATA0 ^= 1
+#define channel_AN0_Toggle()           _LATA0 ^= 1
 /**
   @Summary
     Reads the value of the GPIO pin, RA0.
@@ -146,11 +146,11 @@
     uint16_t portValue;
 
     // Read RA0
-    postValue = AN0_GetValue();
+    postValue = channel_AN0_GetValue();
     </code>
 
 */
-#define AN0_GetValue()         _RA0
+#define channel_AN0_GetValue()         _RA0
 /**
   @Summary
     Configures the GPIO pin, RA0, as an input.
@@ -170,11 +170,11 @@
   @Example
     <code>
     // Sets the RA0 as an input
-    AN0_SetDigitalInput();
+    channel_AN0_SetDigitalInput();
     </code>
 
 */
-#define AN0_SetDigitalInput()  _TRISA0 = 1
+#define channel_AN0_SetDigitalInput()  _TRISA0 = 1
 /**
   @Summary
     Configures the GPIO pin, RA0, as an output.
@@ -194,11 +194,11 @@
   @Example
     <code>
     // Sets the RA0 as an output
-    AN0_SetDigitalOutput();
+    channel_AN0_SetDigitalOutput();
     </code>
 
 */
-#define AN0_SetDigitalOutput() _TRISA0 = 0
+#define channel_AN0_SetDigitalOutput() _TRISA0 = 0
 /**
   @Summary
     Sets the GPIO pin, RA4, high using LATA4.
