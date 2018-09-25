@@ -10,8 +10,8 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/FlightSketch.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=FlightSketch.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/flightsketch.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=flightsketch.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 PACKAGE_TOP_DIR=flightsketch/
 
 # Functions

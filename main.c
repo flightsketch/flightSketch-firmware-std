@@ -29,6 +29,12 @@ void BMP280_delay_msek(uint32_t msek);
 
 struct bmp280_dev bmp;
 bool sendData = true;
+bool init = false;
+bool pyro1Fire = false;
+int  pyro1Count = 0;
+int32_t deployAlt = 2500;
+int32_t armAlt = 3000;
+int pyro1Dur = 60;
 
 char update_due = 0;
 char send_due = 0;
@@ -213,7 +219,7 @@ void getAlt(){
 }
 
 int main(int argc, char** argv) {
-
+    
     
     
     SYSTEM_Initialize();
@@ -256,6 +262,9 @@ int main(int argc, char** argv) {
     rslt = bmp280_get_config(&conf, &bmp);
 
     TMR1_Start();
+    ANSELBbits.ANSB0 = 0;
+    TRISBbits.TRISB0 = 0;
+    LATBbits.LATB0 = 0;
     
     while(1){
         
@@ -263,7 +272,29 @@ int main(int argc, char** argv) {
             update_due = 0;
             send_due++;
             getAlt();
+            
+            if (pyro1Fire && (pyro1Count <= pyro1Dur)) {
+                pyro1Count++;
+                if (pyro1Count > pyro1Dur){
+                    LATBbits.LATB0 = 0;
+                }
+            }
+            
+            if (init && !pyro1Fire) {
+                if (maxAlt > armAlt) {
+                    if (alt < deployAlt){
+                        pyro1Fire = true;
+                        LATBbits.LATB0 = 1;
+                    }
+                }
+            }
+            
         }
+        
+        
+        
+        
+        
         
         if (send_due > 5){
             send_due = 0;
@@ -289,6 +320,9 @@ int main(int argc, char** argv) {
             if (rx == test){
                 maxAlt = 0;
                 refAlt = rawAlt;
+                init = true;
+                pyro1Fire = false;
+                pyro1Count = 0;
             }
         }
     }

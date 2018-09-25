@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=FlightSketch
+PROJECTNAME=flightsketch
 
 # Active Configuration
 DEFAULTCONF=default
