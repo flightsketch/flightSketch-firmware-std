@@ -38,6 +38,15 @@ int pyro1Dur = 60;
 
 char update_due = 0;
 char send_due = 0;
+bool inHead = false;
+bool inData = false;
+char headCount = 0;
+char dataCount = 0;
+char packetType = 0;
+char dataLength = 0;
+unsigned char checksum = 0;
+unsigned char startByte = 0xF5;
+unsigned char dataIn[16];
 
 int32_t alt = 0;
 int32_t rawAlt = 0;
@@ -45,6 +54,15 @@ int32_t maxAlt = 0;
 int32_t refAlt = 0;
 
 int32_t  temp;
+
+union data {
+    unsigned char dataBytes[12];
+    struct dataPacket {
+        int32_t temp;
+        int32_t alt;
+        int32_t maxAlt;
+    }dp;
+}du;
 
 int8_t  BMP280_SPI_bus_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt)
 {
@@ -156,31 +174,56 @@ void  BMP280_delay_msek(uint32_t msek)
 
 void sendDataPacket(){
     
+    unsigned char dataByte = 0x00;
+    unsigned char checksum = 0x00;
+    unsigned char i = 0;
     
-    
-    UART1_Write(0xF5);
-    UART1_Write(0x01);
+    UART1_Write(0xF5);  // FS packet start
+    UART1_Write(0x01);  // Packet type, data type 1
     __delay_ms(1);
-    UART1_Write(0x0C);
-    UART1_Write(0x02);
-
-    UART1_Write((temp >> (0 * 8)) & 0xFF);
-    UART1_Write((temp >> (1 * 8)) & 0xFF);
-    UART1_Write((temp >> (2 * 8)) & 0xFF);
-    UART1_Write((temp >> (3 * 8)) & 0xFF);
+    UART1_Write(0x0C);  // Payload length
+    UART1_Write(0x02);  // Header checksum
     
+    du.dp.alt = alt + 10000;
+    du.dp.maxAlt = maxAlt + 10000;
+    du.dp.temp = temp;
 
-    UART1_Write((((alt+10000)) >> (0 * 8)) & 0xFF);
-    UART1_Write((((alt+10000)) >> (1 * 8)) & 0xFF);
-    UART1_Write((((alt+10000)) >> (2 * 8)) & 0xFF);
-    UART1_Write((((alt+10000)) >> (3 * 8)) & 0xFF);
-    __delay_ms(10);
+    for (i=0; i<8; i++){
+        UART1_Write(du.dataBytes[i]);
+        checksum = checksum + du.dataBytes[i];
+    }
     
-    UART1_Write((((maxAlt+10000)) >> (0 * 8)) & 0xFF);
-    UART1_Write((((maxAlt+10000)) >> (1 * 8)) & 0xFF);
-    UART1_Write((((maxAlt+10000)) >> (2 * 8)) & 0xFF);
-    UART1_Write((((maxAlt+10000)) >> (3 * 8)) & 0xFF);
-    UART1_Write(0x99);
+//    dataByte = (temp >> (0 * 8)) & 0xFF;
+//    UART1_Write(dataByte);
+//    checksum = dataByte;
+//    dataByte = (temp >> (1 * 8)) & 0xFF;
+//    UART1_Write(dataByte);
+//    checksum = checksum + dataByte;
+//    dataByte = (temp >> (2 * 8)) & 0xFF;
+//    UART1_Write(dataByte);
+//    checksum = checksum + dataByte;
+//    dataByte = (temp >> (3 * 8)) & 0xFF;
+//    UART1_Write(dataByte);
+//    checksum = checksum + dataByte;
+//    
+//    dataByte = (((alt+10000)) >> (0 * 8)) & 0xFF;
+//    UART1_Write((((alt+10000)) >> (0 * 8)) & 0xFF);
+//    UART1_Write((((alt+10000)) >> (1 * 8)) & 0xFF);
+//    UART1_Write((((alt+10000)) >> (2 * 8)) & 0xFF);
+//    UART1_Write((((alt+10000)) >> (3 * 8)) & 0xFF);
+    __delay_ms(1);
+    
+    for (i=8; i<12; i++){
+        UART1_Write(du.dataBytes[i]);
+        checksum = checksum + du.dataBytes[i];
+    }
+    UART1_Write(checksum);
+    
+//    UART1_Write((((maxAlt+10000)) >> (0 * 8)) & 0xFF);
+//    UART1_Write((((maxAlt+10000)) >> (1 * 8)) & 0xFF);
+//    UART1_Write((((maxAlt+10000)) >> (2 * 8)) & 0xFF);
+//    UART1_Write((((maxAlt+10000)) >> (3 * 8)) & 0xFF);
+//    UART1_Write(0x99);
 }
 
 
@@ -218,15 +261,116 @@ void getAlt(){
     }
 }
 
+void parseByte(char rx){
+    
+    if (!inHead || !inData){ //Not in header or data, waiting for start of frame
+        
+        if (rx == ((char) 0xF5)){ //Start of packet
+            //print("start of packet...................")
+            
+            inHead = true;
+            headCount = 0;
+            return;
+        }
+    }
+    if (inHead && headCount<3){ //Reading header bytes
+        headCount = headCount + 1;
+        switch (headCount){
+        case 1: packetType = rx;
+                break;
+        case 2: dataLength = rx;
+                break;
+        case 3: 
+            checksum = (startByte + packetType + dataLength);
+            //print("Head checksum = ")
+            //print(checksum)
+            if (((unsigned char)rx) != checksum){
+                inHead = false;
+                return;
+            }
+            else { //Checksum valid, start reading data packet
+                
+                if (dataLength == (unsigned char) 0){
+                    inHead = false; //reset flags to wait for new frame
+                    inData = false;
+                    switch ((unsigned char) packetType){
+                    case 0xF1: parsePacket_typeF1();
+                    break;
+                    case 0xF2: parsePacket_typeF2();
+                    break;
+                    default: maxAlt = 999;
+                    break;
+                    }
+                    return;
+                }
+                else {
+                    inData = true;
+                    dataCount = 0;
+//                dataArray = Array(repeating: 0, count: Int(dataLength));
+                    return;
+                }
+            }
+           
+            
+        }
+    }
+    if (inData){ //In data packet
+        
+        if (dataCount<(dataLength)){ //Read data to array
+            dataIn[dataCount] = rx;
+            dataCount = dataCount + 1;
+            return;
+        }
+
+        if (dataCount == dataLength){ //Last byte = checksum
+            if (rx != doChecksumIn()){
+                inHead = false;
+                return;
+            }
+            else { //Checksum valid, start reading data packet
+                inHead = false; //reset flags to wait for new frame
+                inData = false;
+                switch (packetType){
+                case 0xF1: parsePacket_typeF1();
+                break;
+                case 0xF2: parsePacket_typeF2();
+                break;
+                }
+                return;
+            }
+        }
+    }
+}
+
+int doChecksumIn(){
+    return 0;
+}
+
+void parsePacket_typeF1(){
+    maxAlt = 0;
+    refAlt = rawAlt;
+    init = true;
+    pyro1Fire = false;
+    pyro1Count = 0;
+}
+
+void parsePacket_typeF2(){
+    maxAlt = 799;
+    refAlt = rawAlt;
+    init = true;
+    pyro1Fire = false;
+    pyro1Count = 0;
+}
+
 int main(int argc, char** argv) {
     
-    
+    unsigned char checksum = 0x00;
     
     SYSTEM_Initialize();
     
     UART1_STATUS u1_status;
     u1_status = UART1_StatusGet();
-    char rx;
+    unsigned char rx;
     char test = 0xf5;
     int batt = 0;
     
@@ -312,17 +456,18 @@ int main(int argc, char** argv) {
             UART1_Write(0xF9);
             UART1_Write(batt);
             UART1_Write(batt>>8);
-            UART1_Write(0x99);
+            checksum = batt;
+            checksum = checksum + (batt>>8);
+            UART1_Write(checksum);
+            checksum = 0x00;
         }
         
         if (UART1_TRANSFER_STATUS_RX_DATA_PRESENT & UART1_TransferStatusGet()){
+            
             rx = UART1_Read();
+            parseByte(rx);
             if (rx == test){
-                maxAlt = 0;
-                refAlt = rawAlt;
-                init = true;
-                pyro1Fire = false;
-                pyro1Count = 0;
+                
             }
         }
     }
