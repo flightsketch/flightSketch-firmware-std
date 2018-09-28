@@ -48,7 +48,25 @@ unsigned char checksum = 0;
 unsigned char startByte = 0xF5;
 unsigned char dataIn[16];
 
-int32_t alt = 0;
+bool recordData = false;
+int recordInterval = 0;
+int recordCount = 0;
+int debugCount = 0;
+
+union dataAddress{
+    unsigned long full;
+    unsigned char bytes[4];
+}da;
+
+union altData {
+    long full;
+    unsigned char bytes[4];
+}ad;
+
+unsigned long fileLength;
+
+
+int32_t currentAlt = 0;
 int32_t rawAlt = 0;
 int32_t maxAlt = 0;
 int32_t refAlt = 0;
@@ -101,25 +119,35 @@ int8_t  BMP280_SPI_bus_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_da
 	return (int8_t)iError;
 }
 
-void EEPROM_Read(){
+union altData EEPROM_Read(union dataAddress address){
 //void EEPROM_Write(uint8_t start_address, uint8_t *data_read, uint8_t cnt){
     
+    union altData data;
     EEPROM_WP_SetHigh();
+//    __delay_us(1000);
     EEPROM_HOLD_SetHigh();
+//    __delay_us(1000);
 
     EEPROM_CS_SetLow();
-    __delay_us(1);
+//    __delay_us(1000);
     SPI1_Exchange8bit(0b00000011);
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000000);
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000000);
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000000);
-    __delay_us(1);
+//    __delay_us(1000);
+    SPI1_Exchange8bit(address.bytes[2]);
+//    __delay_us(1000);
+    SPI1_Exchange8bit(address.bytes[1]);
+//    __delay_us(1000);
+    SPI1_Exchange8bit(address.bytes[0]);
+//    __delay_us(1000);
     
 //    SPI1_Exchange8bit(0b00000101);
-    UART1_Write(SPI1_Exchange8bit(0xFF));
+    data.bytes[0] = SPI1_Exchange8bit(0xFF);
+//    __delay_us(1000);
+    data.bytes[1] = SPI1_Exchange8bit(0xFF);
+//    __delay_us(1000);
+    data.bytes[2] = SPI1_Exchange8bit(0xFF);
+//    __delay_us(1000);
+    data.bytes[3] = SPI1_Exchange8bit(0xFF);
+//    __delay_us(1000);
 //    __delay_ms(5);
 //    UART1_Write(SPI1_Exchange8bit(0xFF));
 //    
@@ -132,39 +160,56 @@ void EEPROM_Read(){
 //    __delay_ms(5);
     
     while (SPI1STATbits.SRMPT == false);
+//    __delay_ms(1);
+    EEPROM_CS_SetHigh();
+    
+    return(data);
+    
+}
+void EEPROM_Write(union dataAddress address, unsigned char bytes[]){
+//void EEPROM_Read(uint8_t start_address, uint8_t *data_read, uint8_t cnt){
+    int i;
+    EEPROM_CS_SetLow();
+//    __delay_us(10000);
+    EEPROM_WP_SetHigh();   // remove write protect
+//    __delay_ms(10);
+    EEPROM_HOLD_SetHigh(); // remove hold condition
+//    __delay_ms(10);
+    
+    SPI1_Exchange8bit(0b00000110); // enable writes
+    while (SPI1STATbits.SRMPT == false);
+//    __delay_ms(10);
+    EEPROM_CS_SetHigh();
+//    __delay_us(10000);
+    EEPROM_CS_SetLow();
+//    __delay_us(10000);
+    SPI1_Exchange8bit(0b00000010); // write command
+//    __delay_us(10000);
+    SPI1_Exchange8bit(address.bytes[2]); // address high
+//    __delay_us(10000);
+    SPI1_Exchange8bit(address.bytes[1]); // address mid
+//    __delay_us(10000);
+    SPI1_Exchange8bit(address.bytes[0]); // address low
+//    __delay_us(10000);
+    
+    for (i=0; i<4; i++){
+        SPI1_Exchange8bit(bytes[i]); // data
+//        __delay_us(10000);
+    }
+    
+    while (SPI1STATbits.SRMPT == false);
+//    __delay_ms(10);
     EEPROM_CS_SetHigh();
     
 }
-void EEPROM_Write(){
-//void EEPROM_Read(uint8_t start_address, uint8_t *data_read, uint8_t cnt){
-    
-    EEPROM_WP_SetHigh();
-    EEPROM_HOLD_SetHigh();
 
-    EEPROM_CS_SetLow();
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000110);
-    while (SPI1STATbits.SRMPT == false);
-    EEPROM_CS_SetHigh();
-    __delay_us(1);
-    EEPROM_CS_SetLow();
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000010);
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000000);
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000000);
-    __delay_us(1);
-    SPI1_Exchange8bit(0b00000000);
-    __delay_us(1);
-    
-    SPI1_Exchange8bit(0x42);
-    __delay_us(1);
-    while (SPI1STATbits.SRMPT == false);
-    EEPROM_CS_SetHigh();
-    
-    UART1_Write(0x43);
-    
+void writeData(){
+    union altData altWrite;
+    altWrite.full = currentAlt + 10000;
+    union dataAddress altWriteAddress;
+    altWriteAddress.full = fileLength;
+    EEPROM_Write(altWriteAddress, altWrite.bytes);
+    fileLength = fileLength + 4;
 }
 
 void  BMP280_delay_msek(uint32_t msek)
@@ -184,7 +229,7 @@ void sendDataPacket(){
     UART1_Write(0x0C);  // Payload length
     UART1_Write(0x02);  // Header checksum
     
-    du.dp.alt = alt + 10000;
+    du.dp.alt = currentAlt + 10000;
     du.dp.maxAlt = maxAlt + 10000;
     du.dp.temp = temp;
 
@@ -254,10 +299,10 @@ void getAlt(){
     altf = altf * 10;
     
     rawAlt = (int32_t) altf;
-    alt = rawAlt - refAlt;
+    currentAlt = rawAlt - refAlt;
     
-    if (alt>maxAlt){
-        maxAlt = alt;
+    if (currentAlt>maxAlt){
+        maxAlt = currentAlt;
     }
 }
 
@@ -297,6 +342,10 @@ void parseByte(char rx){
                     case 0xF1: parsePacket_typeF1();
                     break;
                     case 0xF2: parsePacket_typeF2();
+                    break;
+                    case 0xF3: parsePacket_typeF3();
+                    break;
+                    case 0xF4: parsePacket_typeF4();
                     break;
                     default: maxAlt = 999;
                     break;
@@ -354,12 +403,76 @@ void parsePacket_typeF1(){
     pyro1Count = 0;
 }
 
-void parsePacket_typeF2(){
-    maxAlt = 799;
-    refAlt = rawAlt;
-    init = true;
-    pyro1Fire = false;
-    pyro1Count = 0;
+void parsePacket_typeF2(){ // start data recording 
+    fileLength = 0;
+    recordData = true;
+//    writeData();
+//    union altData dataSend;
+//    dataSend.bytes[0] = debugCount;
+//    dataSend.bytes[1] = debugCount;
+//    dataSend.bytes[2] = debugCount;
+//    dataSend.bytes[3] = debugCount;
+//    debugCount++;
+//    
+//    union dataAddress add;
+//    add.full = 0;
+//
+//    
+//    
+//    EEPROM_Write(add, dataSend.bytes);
+
+    
+}
+
+void parsePacket_typeF3(){ // stop data recording
+    
+}
+
+void parsePacket_typeF4(){ // download data
+    union altData dataRx;
+    unsigned char checksumTest = 0x00;
+    union dataAddress readAddress;
+    int i;
+    int numPackets = fileLength/4;
+    
+    sendFileHeader();
+    
+    readAddress.full = 0;
+    
+    for (i=0; i<numPackets; i++){
+        __delay_us(100);
+        UART1_Write(0xF5);
+        UART1_Write(0x04);
+        UART1_Write(0x04);
+        UART1_Write(0xFD);
+        __delay_us(500);
+
+        dataRx = EEPROM_Read(readAddress);;
+        UART1_Write(dataRx.bytes[0]);
+        checksumTest = checksumTest + dataRx.bytes[0];
+        UART1_Write(dataRx.bytes[1]);
+        checksumTest = checksumTest + dataRx.bytes[1];
+        UART1_Write(dataRx.bytes[2]);
+        checksumTest = checksumTest + dataRx.bytes[2];
+        UART1_Write(dataRx.bytes[3]);
+        checksumTest = checksumTest + dataRx.bytes[3];
+//        __delay_us(100);
+//        __delay_ms(10);
+        UART1_Write(checksumTest);
+        __delay_us(500);
+        checksumTest = 0;
+        readAddress.full = readAddress.full + 4;
+    }
+}
+
+void sendFileHeader(){
+        UART1_Write(0xF5);
+        UART1_Write(0x03);
+        UART1_Write(0x01);
+        UART1_Write(0xF9);
+        UART1_Write(fileLength);
+        UART1_Write(fileLength);
+        __delay_us(100);
 }
 
 int main(int argc, char** argv) {
@@ -426,10 +539,18 @@ int main(int argc, char** argv) {
             
             if (init && !pyro1Fire) {
                 if (maxAlt > armAlt) {
-                    if (alt < deployAlt){
+                    if (currentAlt < deployAlt){
                         pyro1Fire = true;
                         LATBbits.LATB0 = 1;
                     }
+                }
+            }
+            
+            if (recordData){
+                recordCount = recordCount + 1;
+                if (recordCount >= recordInterval){
+                    recordCount = 0;
+                    writeData();
                 }
             }
             
