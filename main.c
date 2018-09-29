@@ -463,15 +463,38 @@ void parsePacket_typeF4(){ // download data
         checksumTest = 0;
         readAddress.full = readAddress.full + 4;
     }
+    
+    sendFileEOF();
 }
 
 void sendFileHeader(){
+    unsigned char fileByte = 0x00;
+    unsigned char headerChecksum = 0x00;
         UART1_Write(0xF5);
         UART1_Write(0x03);
-        UART1_Write(0x01);
-        UART1_Write(0xF9);
-        UART1_Write(fileLength);
-        UART1_Write(fileLength);
+        UART1_Write(0x04);
+        UART1_Write(0xFC);
+        fileByte = (fileLength >> (0 * 8)) & 0xFF;
+        UART1_Write(fileByte);
+        headerChecksum = headerChecksum + fileByte;
+        fileByte = (fileLength >> (1 * 8)) & 0xFF;
+        UART1_Write(fileByte);
+        headerChecksum = headerChecksum + fileByte;
+        fileByte = (fileLength >> (2 * 8)) & 0xFF;
+        UART1_Write(fileByte);
+        headerChecksum = headerChecksum + fileByte;
+        fileByte = (fileLength >> (3 * 8)) & 0xFF;
+        UART1_Write(fileByte);
+        headerChecksum = headerChecksum + fileByte;
+        UART1_Write(headerChecksum);
+        __delay_us(100);
+}
+
+void sendFileEOF(){
+        UART1_Write(0xF5);
+        UART1_Write(0x05);
+        UART1_Write(0x00);
+        UART1_Write(0xFA);
         __delay_us(100);
 }
 
