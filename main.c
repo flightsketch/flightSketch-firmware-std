@@ -63,6 +63,12 @@ union altData {
     unsigned char bytes[4];
 }ad;
 
+union accData {
+    long full;
+    unsigned char bytes[4];
+    
+}accd;
+
 unsigned long fileLength;
 
 
@@ -306,6 +312,77 @@ void getAlt(){
     }
 }
 
+void accInit(){
+    union accData dataRx1;
+    union accData p11;
+    unsigned char accSum = 0;
+    __delay_ms(1000);
+    ACC_CS_SetLow();
+    p11.bytes[3] = SPI1_Exchange8bit(0x50);
+    p11.bytes[2] = SPI1_Exchange8bit(0x00);
+    p11.bytes[1] = SPI1_Exchange8bit(0x20);
+    p11.bytes[0] = SPI1_Exchange8bit(0x7F);
+    while (SPI1STATbits.SRMPT == false);
+    ACC_CS_SetHigh();
+    ACC_CS_SetLow();
+    dataRx1.bytes[3] = SPI1_Exchange8bit(0xff);
+    dataRx1.bytes[2] = SPI1_Exchange8bit(0xff);
+    dataRx1.bytes[1] = SPI1_Exchange8bit(0xff);
+    dataRx1.bytes[0] = SPI1_Exchange8bit(0xff);
+    while (SPI1STATbits.SRMPT == false);
+    ACC_CS_SetHigh();
+    
+}
+
+void getAcc(){
+    
+    union accData dataRx;
+    union accData p1;
+    unsigned char accSum = 0;
+    ACC_CS_SetLow();
+    __delay_us(100);
+    p1.bytes[3] = SPI1_Exchange8bit(0x20);
+    __delay_us(100);
+    p1.bytes[2] = SPI1_Exchange8bit(0x00);
+    __delay_us(100);
+    p1.bytes[1] = SPI1_Exchange8bit(0x00);
+    __delay_us(100);
+    p1.bytes[0] = SPI1_Exchange8bit(0x58);
+    __delay_us(100);
+    while (SPI1STATbits.SRMPT == false);
+    ACC_CS_SetHigh();
+    __delay_us(100);
+    
+    ACC_CS_SetLow();
+    __delay_us(100);
+    dataRx.bytes[3] = SPI1_Exchange8bit(0x20);
+    __delay_us(100);
+    dataRx.bytes[2] = SPI1_Exchange8bit(0x00);
+    __delay_us(100);
+    dataRx.bytes[1] = SPI1_Exchange8bit(0x00);
+    __delay_us(100);
+    dataRx.bytes[0] = SPI1_Exchange8bit(0x58);
+    __delay_us(100);
+    while (SPI1STATbits.SRMPT == false);
+    ACC_CS_SetHigh();
+    
+    UART1_Write(0xF5);
+    UART1_Write(0x06);
+    UART1_Write(0x04);
+    UART1_Write(0xFF);
+    __delay_ms(10);
+    UART1_Write(dataRx.bytes[3]);
+    accSum = accSum + dataRx.bytes[3];
+    UART1_Write(dataRx.bytes[2]);
+    accSum = accSum + dataRx.bytes[2];
+    UART1_Write(dataRx.bytes[1]);
+    accSum = accSum + dataRx.bytes[1];
+    UART1_Write(dataRx.bytes[0]);
+    accSum = accSum + dataRx.bytes[0];
+    UART1_Write(accSum);
+    
+}
+
 void parseByte(char rx){
     
     if (!inHead || !inData){ //Not in header or data, waiting for start of frame
@@ -546,12 +623,15 @@ int main(int argc, char** argv) {
     TRISBbits.TRISB0 = 0;
     LATBbits.LATB0 = 0;
     
+    accInit();
+    
     while(1){
         
         if (update_due > 0){
             update_due = 0;
             send_due++;
             getAlt();
+            getAcc();
             
             if (pyro1Fire && (pyro1Count <= pyro1Dur)) {
                 pyro1Count++;
