@@ -34,7 +34,7 @@ bool pyro1Fire = false;
 int  pyro1Count = 0;
 int32_t deployAlt = 2500;
 int32_t armAlt = 3000;
-int pyro1Dur = 60;
+int pyro1Dur = 300;
 
 char update_due = 0;
 char send_due = 0;
@@ -231,7 +231,7 @@ void sendDataPacket(){
     
     UART1_Write(0xF5);  // FS packet start
     UART1_Write(0x01);  // Packet type, data type 1
-    __delay_ms(1);
+    __delay_us(500);
     UART1_Write(0x0C);  // Payload length
     UART1_Write(0x02);  // Header checksum
     
@@ -262,7 +262,7 @@ void sendDataPacket(){
 //    UART1_Write((((alt+10000)) >> (1 * 8)) & 0xFF);
 //    UART1_Write((((alt+10000)) >> (2 * 8)) & 0xFF);
 //    UART1_Write((((alt+10000)) >> (3 * 8)) & 0xFF);
-    __delay_ms(1);
+    __delay_us(500);
     
     for (i=8; i<12; i++){
         UART1_Write(du.dataBytes[i]);
@@ -317,20 +317,21 @@ void accInit(){
     union accData p11;
     unsigned char accSum = 0;
     __delay_ms(1000);
-    ACC_CS_SetLow();
+    LATBbits.LATB14 = 0;
     p11.bytes[3] = SPI1_Exchange8bit(0x50);
     p11.bytes[2] = SPI1_Exchange8bit(0x00);
     p11.bytes[1] = SPI1_Exchange8bit(0x20);
     p11.bytes[0] = SPI1_Exchange8bit(0x7F);
     while (SPI1STATbits.SRMPT == false);
-    ACC_CS_SetHigh();
-    ACC_CS_SetLow();
-    dataRx1.bytes[3] = SPI1_Exchange8bit(0xff);
-    dataRx1.bytes[2] = SPI1_Exchange8bit(0xff);
-    dataRx1.bytes[1] = SPI1_Exchange8bit(0xff);
-    dataRx1.bytes[0] = SPI1_Exchange8bit(0xff);
+    LATBbits.LATB14 = 1;
+    __delay_us(1);
+    LATBbits.LATB14 = 0;
+    dataRx1.bytes[3] = SPI1_Exchange8bit(0x50);
+    dataRx1.bytes[2] = SPI1_Exchange8bit(0x00);
+    dataRx1.bytes[1] = SPI1_Exchange8bit(0x20);
+    dataRx1.bytes[0] = SPI1_Exchange8bit(0x7F);
     while (SPI1STATbits.SRMPT == false);
-    ACC_CS_SetHigh();
+    LATBbits.LATB14 = 1;
     
 }
 
@@ -339,47 +340,47 @@ void getAcc(){
     union accData dataRx;
     union accData p1;
     unsigned char accSum = 0;
-    ACC_CS_SetLow();
-    __delay_us(100);
+    LATBbits.LATB14 = 0;
+    //__delay_us(100);
     p1.bytes[3] = SPI1_Exchange8bit(0x20);
-    __delay_us(100);
+    //__delay_us(100);
     p1.bytes[2] = SPI1_Exchange8bit(0x00);
-    __delay_us(100);
+    //__delay_us(100);
     p1.bytes[1] = SPI1_Exchange8bit(0x00);
-    __delay_us(100);
+    //__delay_us(100);
     p1.bytes[0] = SPI1_Exchange8bit(0x58);
-    __delay_us(100);
+    //__delay_us(100);
     while (SPI1STATbits.SRMPT == false);
-    ACC_CS_SetHigh();
-    __delay_us(100);
+    LATBbits.LATB14 = 1;
+    __delay_us(1);
     
-    ACC_CS_SetLow();
-    __delay_us(100);
+    LATBbits.LATB14 = 0;
+    //__delay_us(100);
     dataRx.bytes[3] = SPI1_Exchange8bit(0x20);
-    __delay_us(100);
+    //__delay_us(100);
     dataRx.bytes[2] = SPI1_Exchange8bit(0x00);
-    __delay_us(100);
+    //__delay_us(100);
     dataRx.bytes[1] = SPI1_Exchange8bit(0x00);
-    __delay_us(100);
+    //__delay_us(100);
     dataRx.bytes[0] = SPI1_Exchange8bit(0x58);
-    __delay_us(100);
+    //__delay_us(100);
     while (SPI1STATbits.SRMPT == false);
-    ACC_CS_SetHigh();
+    LATBbits.LATB14 = 1;
     
-    UART1_Write(0xF5);
-    UART1_Write(0x06);
-    UART1_Write(0x04);
-    UART1_Write(0xFF);
-    __delay_ms(10);
-    UART1_Write(dataRx.bytes[3]);
-    accSum = accSum + dataRx.bytes[3];
-    UART1_Write(dataRx.bytes[2]);
-    accSum = accSum + dataRx.bytes[2];
-    UART1_Write(dataRx.bytes[1]);
-    accSum = accSum + dataRx.bytes[1];
-    UART1_Write(dataRx.bytes[0]);
-    accSum = accSum + dataRx.bytes[0];
-    UART1_Write(accSum);
+//    UART1_Write(0xF5);
+//    UART1_Write(0x06);
+//    UART1_Write(0x04);
+//    UART1_Write(0xFF);
+//    __delay_ms(10);
+//    UART1_Write(dataRx.bytes[3]);
+//    accSum = accSum + dataRx.bytes[3];
+//    UART1_Write(dataRx.bytes[2]);
+//    accSum = accSum + dataRx.bytes[2];
+//    UART1_Write(dataRx.bytes[1]);
+//    accSum = accSum + dataRx.bytes[1];
+//    UART1_Write(dataRx.bytes[0]);
+//    accSum = accSum + dataRx.bytes[0];
+//    UART1_Write(accSum);
     
 }
 
@@ -605,8 +606,8 @@ int main(int argc, char** argv) {
 
     rslt = bmp280_get_config(&conf, &bmp);
 
-    conf.filter = BMP280_FILTER_COEFF_8;
-    conf.os_pres = BMP280_OS_16X;
+    conf.filter = BMP280_FILTER_OFF;
+    conf.os_pres = BMP280_OS_8X;
     conf.os_temp = BMP280_OS_1X;
     conf.odr = BMP280_ODR_0_5_MS;
 
@@ -623,16 +624,24 @@ int main(int argc, char** argv) {
     TRISBbits.TRISB0 = 0;
     LATBbits.LATB0 = 0;
     
+
+    TRISBbits.TRISB5 = 0;
+    LATBbits.LATB5 = 0;
+    
+    TRISBbits.TRISB14 = 0;
+    LATBbits.LATB14 = 1;
+    
     accInit();
     
     while(1){
         
         if (update_due > 0){
+            LATBbits.LATB5 = 1;
             update_due = 0;
             send_due++;
             getAlt();
-            getAcc();
             
+            getAcc();
             if (pyro1Fire && (pyro1Count <= pyro1Dur)) {
                 pyro1Count++;
                 if (pyro1Count > pyro1Dur){
@@ -656,7 +665,7 @@ int main(int argc, char** argv) {
                     writeData();
                 }
             }
-            
+          
         }
         
         
@@ -670,12 +679,12 @@ int main(int argc, char** argv) {
                 sendDataPacket();
             }
             ADC1_SamplingStart();
-            __delay_ms(1);
+            __delay_us(50);
             ADC1_SamplingStop();
             batt = ADC1_Channel1ConversionResultGet();
             UART1_Write(0xF5);
             UART1_Write(0x02);
-            __delay_ms(1);
+            __delay_us(500);
             UART1_Write(0x02);
             UART1_Write(0xF9);
             UART1_Write(batt);
@@ -694,6 +703,7 @@ int main(int argc, char** argv) {
                 
             }
         }
+        LATBbits.LATB5 = 0;
     }
     return (EXIT_SUCCESS);
 }
