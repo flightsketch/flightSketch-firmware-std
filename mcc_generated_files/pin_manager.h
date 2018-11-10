@@ -347,6 +347,152 @@
 #define EEPROM_WP_SetDigitalOutput() _TRISA4 = 0
 /**
   @Summary
+    Sets the GPIO pin, RB14, high using LATB14.
+
+  @Description
+    Sets the GPIO pin, RB14, high using LATB14.
+
+  @Preconditions
+    The RB14 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB14 high (1)
+    ACC_CS_SetHigh();
+    </code>
+
+*/
+#define ACC_CS_SetHigh()          _LATB14 = 1
+/**
+  @Summary
+    Sets the GPIO pin, RB14, low using LATB14.
+
+  @Description
+    Sets the GPIO pin, RB14, low using LATB14.
+
+  @Preconditions
+    The RB14 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB14 low (0)
+    ACC_CS_SetLow();
+    </code>
+
+*/
+#define ACC_CS_SetLow()           _LATB14 = 0
+/**
+  @Summary
+    Toggles the GPIO pin, RB14, using LATB14.
+
+  @Description
+    Toggles the GPIO pin, RB14, using LATB14.
+
+  @Preconditions
+    The RB14 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB14
+    ACC_CS_Toggle();
+    </code>
+
+*/
+#define ACC_CS_Toggle()           _LATB14 ^= 1
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB14.
+
+  @Description
+    Reads the value of the GPIO pin, RB14.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB14
+    postValue = ACC_CS_GetValue();
+    </code>
+
+*/
+#define ACC_CS_GetValue()         _RB14
+/**
+  @Summary
+    Configures the GPIO pin, RB14, as an input.
+
+  @Description
+    Configures the GPIO pin, RB14, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB14 as an input
+    ACC_CS_SetDigitalInput();
+    </code>
+
+*/
+#define ACC_CS_SetDigitalInput()  _TRISB14 = 1
+/**
+  @Summary
+    Configures the GPIO pin, RB14, as an output.
+
+  @Description
+    Configures the GPIO pin, RB14, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB14 as an output
+    ACC_CS_SetDigitalOutput();
+    </code>
+
+*/
+#define ACC_CS_SetDigitalOutput() _TRISB14 = 0
+/**
+  @Summary
     Sets the GPIO pin, RB15, high using LATB15.
 
   @Description

@@ -84,7 +84,7 @@ void ADC1_Initialize (void)
 
    AD1CON1 = 0x8400;
 
-    // CSCNA disabled; VCFG0 AVDD; VCFG1 AVSS; ALTS disabled; BUFM disabled; SMPI 1; CHPS 1 Channel; 
+    // CSCNA disabled; VCFG0 AVDD; VCFG1 AVSS; ALTS disabled; BUFM disabled; SMPI Generates interrupt after completion of every sample/conversion operation; CHPS 1 Channel; 
 
    AD1CON2 = 0x4;
 

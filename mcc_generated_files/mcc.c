@@ -98,8 +98,8 @@ void SYSTEM_ResetCauseClear(RESET_MASKS resetFlagMask);
 void SYSTEM_Initialize(void)
 {
     PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
     INTERRUPT_Initialize();
+    OSCILLATOR_Initialize();
     SPI1_Initialize();
     UART1_Initialize();
     ADC1_Initialize();
