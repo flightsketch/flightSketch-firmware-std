@@ -227,11 +227,17 @@ void EEPROM_Write(union dataAddress address, unsigned char bytes[]){
 
 void writeData(){
     union altData altWrite;
-    altWrite.full = currentAltInt + 10000;
+    altWrite.full = currentAltMeas*10 + 10000;
     union dataAddress altWriteAddress;
     altWriteAddress.full = fileLength;
     EEPROM_Write(altWriteAddress, altWrite.bytes);
     fileLength = fileLength + 4;
+    __delay_ms(10);
+    altWrite.full = currentAlt*10 + 10000;
+    altWriteAddress.full = fileLength;
+    EEPROM_Write(altWriteAddress, altWrite.bytes);
+    fileLength = fileLength + 4;
+
 }
 
 void  BMP280_delay_msek(uint32_t msek)
