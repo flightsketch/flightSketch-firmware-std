@@ -72,10 +72,26 @@ union accData {
 unsigned long fileLength;
 
 
-int32_t currentAlt = 0;
-int32_t rawAlt = 0;
+int32_t currentAltInt = 0;
+float rawAlt = 0;
 int32_t maxAlt = 0;
-int32_t refAlt = 0;
+float refAlt = 0;
+
+float currentAlt = 0;
+float currentAltMeas = 0;
+float currentV = 0;
+float maxV = 0;
+float currentAcc = 0;
+
+float E = 0;
+
+float K1 = 0.097128094515918;
+float K2 = 0.248046634941573;
+float K3 = 0.316731906522445;
+
+float dt = 0.020;
+float t1;
+float t2;
 
 int32_t  temp;
 
@@ -211,7 +227,7 @@ void EEPROM_Write(union dataAddress address, unsigned char bytes[]){
 
 void writeData(){
     union altData altWrite;
-    altWrite.full = currentAlt + 10000;
+    altWrite.full = currentAltInt + 10000;
     union dataAddress altWriteAddress;
     altWriteAddress.full = fileLength;
     EEPROM_Write(altWriteAddress, altWrite.bytes);
@@ -235,7 +251,7 @@ void sendDataPacket(){
     UART1_Write(0x0C);  // Payload length
     UART1_Write(0x02);  // Header checksum
     
-    du.dp.alt = currentAlt + 10000;
+    du.dp.alt = currentAltInt + 10000;
     du.dp.maxAlt = maxAlt + 10000;
     du.dp.temp = temp;
 
@@ -302,13 +318,24 @@ void getAlt(){
     altf = pow(altf,0.190284);
     altf = 1.0 - altf;
     altf = altf * 145366.45;
-    altf = altf * 10;
     
-    rawAlt = (int32_t) altf;
-    currentAlt = rawAlt - refAlt;
+    rawAlt = altf;
+    currentAltMeas = rawAlt - refAlt;
     
-    if (currentAlt>maxAlt){
-        maxAlt = currentAlt;
+    currentAlt = currentAlt + t1*currentV + t2*currentAcc;
+    currentV = currentV + t1*currentAcc;
+    
+    E = currentAltMeas - currentAlt;
+    
+    currentAlt = currentAlt + K1 * E;
+    currentV = currentV + K2 * E;
+    currentAcc = currentAcc + K3 * E;
+    
+    currentAltInt = (currentAlt*10);
+    
+    
+    if (currentAltInt>maxAlt){
+        maxAlt = currentAltInt;
     }
 }
 
@@ -479,6 +506,11 @@ void parsePacket_typeF1(){
     init = true;
     pyro1Fire = false;
     pyro1Count = 0;
+    currentAlt = 0.0;
+    currentV = 0.0;
+    currentAcc = 0.0;
+    recordData = false;
+    fileLength = 0;
 }
 
 void parsePacket_typeF2(){ // start data recording 
@@ -582,6 +614,9 @@ int main(int argc, char** argv) {
     
     SYSTEM_Initialize();
     
+    t1 = dt;
+    t2 = 0.5*dt*dt;
+    
     UART1_STATUS u1_status;
     u1_status = UART1_StatusGet();
     unsigned char rx;
@@ -651,11 +686,24 @@ int main(int argc, char** argv) {
             
             if (init && !pyro1Fire) {
                 if (maxAlt > armAlt) {
-                    if (currentAlt < deployAlt){
+                    if (currentAltInt < deployAlt){
                         pyro1Fire = true;
                         LATBbits.LATB0 = 1;
                     }
                 }
+            }
+            
+            if (currentV > 5.0){
+                recordData = true;
+                
+            }
+            
+            if (fileLength > 2097152){
+                recordData = false;
+            }
+            
+            if (fileLength > 24000){
+                recordData = false;
             }
             
             if (recordData){
